@@ -3,41 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Under Construction</title>
+  <title>Nexora Technologies</title>
   <style>
     body {
       margin: 0;
-      background-color: #000000;
-      color: white;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom right, #f4f4f4, #dfe9f3);
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
-      flex-direction: column;
+      color: #333;
+    }
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
       text-align: center;
+      max-width: 400px;
     }
-
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
+    .button {
+      margin-top: 1.5rem;
+      padding: 0.75rem 1.5rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-size: 1rem;
     }
-
-    p {
-      font-size: 1.2rem;
-      opacity: 0.9;
+    .button:disabled {
+      background-color: #999;
+      cursor: not-allowed;
     }
-
-    .loader {
-      border: 8px solid rgba(255, 255, 255, 0.2);
-      border-top: 8px solid white;
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #007bff;
       border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      animation: spin 1.2s linear infinite;
-      margin-top: 30px;
+      width: 20px;
+      height: 20px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
     }
-
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
@@ -45,9 +54,48 @@
   </style>
 </head>
 <body>
-  <h1>🚧 Under Construction</h1>
-  <p>This website is under construction.</p>
-  <div class="loader"></div>
+  <div class="card" id="content">
+    <h1>Welcome to Nexora Technologies</h1>
+    <p>Revolutionizing AI-Powered Blockchain Synergy for Tomorrow.</p>
+    <button class="button" onclick="startTroll()">Enter Portal</button>
+  </div>
+
+  <script>
+    const messages = [
+      { title: "Loading Neural Quantum Layers...", text: "Initiating Hyperloop Compression Protocols." },
+      { title: "Verifying Sentience...", text: "Are you even real? We’re still unsure." },
+      { title: "Deploying Banana Protocol 🍌", text: "This is totally industry standard." },
+      { title: "Redirecting to... Oh no.", text: "404: Meaning of Life Not Found." },
+      { title: "Launching MemeCoin++ 🚀", text: "Your retirement fund is now in hands of a hamster." },
+      { title: "You've Been Professionally Trolled 🎭", text: "Thanks for believing in us. We don't exist." },
+      { title: "🚧 Under Construction 🚧", text: "Still working on something pointless. Stay confused!" }
+    ];
+
+    let index = 0;
+
+    function startTroll() {
+      const content = document.getElementById("content");
+      content.innerHTML = `
+        <h2>Initializing...</h2>
+        <div class="spinner"></div>
+      `;
+      setTimeout(showNextMessage, 1500);
+    }
+
+    function showNextMessage() {
+      const content = document.getElementById("content");
+      const msg = messages[index];
+      content.innerHTML = `
+        <h2>${msg.title}</h2>
+        <p>${msg.text}</p>
+      `;
+      index++;
+      if (index < messages.length) {
+        setTimeout(showNextMessage, 2500);
+      } else {
+        content.innerHTML += `<button class="button" onclick="location.reload()">Try Again?</button>`;
+      }
+    }
+  </script>
 </body>
 </html>
-
