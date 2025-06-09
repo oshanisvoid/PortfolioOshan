@@ -119,7 +119,6 @@ a:hover {
     font-weight: 700;
     color: var(--primary-color);
     margin-bottom: 10px;
-    text-decoration: white wavy underline;
 }
 
 .hero .subtitle {
