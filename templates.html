@@ -1,47 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oshan - Templates & Code</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oshan - Templates & Code</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 </head>
 <body>
-    <header class="navbar">
-        <div class="container">
-            <div class="logo">Oshan.Codes</div>
-            <button class="hamburger" aria-label="Toggle navigation menu">
-                <i class="fas fa-bars"></i>
-            </button>
-            <nav class="nav-links-container">
-                <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li> <li><a href="templates.html" class="active-nav">Templates</a></li> <li><a href="index.html#work-section">Works</a></li>
-                    <li><a href="index.html#contact-section">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+  <header class="navbar">
+    <div class="container">
+      <div class="logo">Oshan.Codes</div>
+      <button class="hamburger" aria-label="Toggle navigation menu">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav class="nav-links-container">
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="templates.html" class="active-nav">Templates</a></li>
+          <li><a href="index.html#work-section">Works</a></li>
+          <li><a href="index.html#contact-section">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-    <main class="container">
-        <section class="page-hero">
-            <h1>Templates & Code Snippets</h1>
-            <p>Explore a collection of useful code snippets and templates for Minecraft server development, optimization, and more. Feel free to copy and adapt them for your projects!</p>
-        </section>
+  <main class="container">
+    <section class="page-hero">
+      <h1>Templates & Code Snippets</h1>
+      <p>Explore a collection of useful code snippets and templates for Minecraft server development, optimization, and more. Feel free to copy and adapt them for your projects!</p>
+    </section>
 
-        <section class="code-section">
-            <h2>Server Optimization Config (Paper.yml example)</h2>
-            <p class="code-topic-description">This snippet provides a highly optimized Paper.yml configuration to reduce lag and improve server performance.</p>
-            <div class="code-block-wrapper">
-                <pre><code class="language-yaml"># Paper global configuration
+    <section class="code-section">
+      <h2>Server Optimization Config (Paper.yml example)</h2>
+      <p class="code-topic-description">Highly optimized Paper.yml settings to reduce lag and improve performance.</p>
+      <div class="code-block-wrapper">
+        <pre><code class="language-yaml"># Paper global configuration
 settings:
   chunk-loading:
-    # ... (other chunk loading settings)
     max-concurrent-reads: 8
     min-load-time: 50
-    # ...
   tick-rates:
     no-tick-view-distance: 10
     enable-lag-limiter: true
@@ -55,15 +56,14 @@ settings:
     misc: 32
     other: 64
   max-entity-collisions: 2
-  # ... (many more optimization settings)
 </code></pre>
-                <button class="copy-button" onclick="copyCode(this)">Copy Code</button>
-            </div>
+        <button class="copy-button" onclick="copyCode(this)">Copy Code</button>
+      </div>
 
-            <h2>Basic Spigot Plugin (Java)</h2>
-            <p class="code-topic-description">A simple "Hello World" plugin structure for Spigot/Paper, showing basic plugin setup.</p>
-            <div class="code-block-wrapper">
-                <pre><code class="language-java">package com.oshan.myplugin;
+      <h2>Basic Spigot Plugin (Java)</h2>
+      <p class="code-topic-description">A minimal Spigot plugin structure printing a message when enabled.</p>
+      <div class="code-block-wrapper">
+        <pre><code class="language-java">package com.oshan.myplugin;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -71,29 +71,24 @@ public class MyAwesomePlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
         getLogger().info("MyAwesomePlugin has been enabled!");
         getCommand("hello").setExecutor(new HelloCommand());
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
         getLogger().info("MyAwesomePlugin has been disabled!");
     }
-}
-</code></pre>
-                <button class="copy-button" onclick="copyCode(this)">Copy Code</button>
-            </div>
+}</code></pre>
+        <button class="copy-button" onclick="copyCode(this)">Copy Code</button>
+      </div>
 
-            <h2>BungeeCord Config (config.yml)</h2>
-            <p class="code-topic-description">An example BungeeCord configuration for connecting multiple Minecraft servers.</p>
-            <div class="code-block-wrapper">
-                <pre><code class="language-yaml"># BungeeCord configuration
-listeners:
+      <h2>BungeeCord Config (config.yml)</h2>
+      <p class="code-topic-description">Example config.yml for BungeeCord to link multiple Minecraft servers.</p>
+      <div class="code-block-wrapper">
+        <pre><code class="language-yaml">listeners:
 - host: 0.0.0.0:25577
   query_enabled: false
-  # ...
   force_default_server: true
   tab_list: GLOBAL_PING
   ping_passthrough: false
@@ -108,7 +103,6 @@ servers:
     address: localhost:25566
     restricted: false
     motd: '&bSurvival Server'
-  # ...
 permissions:
   default:
   - bungeecord.command.list
@@ -116,77 +110,69 @@ permissions:
   admin:
   - bungeecord.command.alert
   - bungeecord.command.end
-ip_forward: true
-</code></pre>
-                <button class="copy-button" onclick="copyCode(this)">Copy Code</button>
-            </div>
+ip_forward: true</code></pre>
+        <button class="copy-button" onclick="copyCode(this)">Copy Code</button>
+      </div>
+    </section>
+  </main>
 
-            </section>
-    </main>
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 oshanpaudel. All rights reserved.</p>
+    </div>
+  </footer>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 oshanpaudel. All rights reserved.</p>
-        </div>
-    </footer>
+  <script>
+    const hamburger = document.querySelector('.hamburger');
+    const navLinksContainer = document.querySelector('.nav-links-container');
+    const navLinks = document.querySelector('.nav-links');
 
-    <script>
-        // Navbar responsiveness script (copied from index.html)
-        const hamburger = document.querySelector('.hamburger');
-        const navLinksContainer = document.querySelector('.nav-links-container');
-        const navLinks = document.querySelector('.nav-links');
+    hamburger.addEventListener('click', () => {
+      navLinksContainer.classList.toggle('active');
+      hamburger.querySelector('i').classList.toggle('fa-bars');
+      hamburger.querySelector('i').classList.toggle('fa-times');
+    });
 
-        hamburger.addEventListener('click', () => {
-            navLinksContainer.classList.toggle('active');
-            hamburger.querySelector('i').classList.toggle('fa-bars');
-            hamburger.querySelector('i').classList.toggle('fa-times');
-        });
-
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                if (link.getAttribute('target') !== '_blank') {
-                    navLinksContainer.classList.remove('active');
-                    hamburger.querySelector('i').classList.remove('fa-times');
-                    hamburger.querySelector('i').classList.add('fa-bars');
-                }
-            });
-        });
-
-        // Code Copy functionality
-        function copyCode(buttonElement) {
-            const codeBlock = buttonElement.previousElementSibling.querySelector('code');
-            if (codeBlock) {
-                // Use the Clipboard API for modern browsers
-                navigator.clipboard.writeText(codeBlock.textContent)
-                    .then(() => {
-                        buttonElement.textContent = "Copied!";
-                        setTimeout(() => {
-                            buttonElement.textContent = "Copy Code";
-                        }, 2000); // Reset button text after 2 seconds
-                    })
-                    .catch(err => {
-                        console.error('Failed to copy text: ', err);
-                        // Fallback for older browsers (less reliable)
-                        const textArea = document.createElement("textarea");
-                        textArea.value = codeBlock.textContent;
-                        textArea.style.position = "fixed"; // Avoid scrolling to bottom
-                        document.body.appendChild(textArea);
-                        textArea.focus();
-                        textArea.select();
-                        try {
-                            document.execCommand('copy');
-                            buttonElement.textContent = "Copied!";
-                            setTimeout(() => {
-                                buttonElement.textContent = "Copy Code";
-                            }, 2000);
-                        } catch (err) {
-                            console.error('Fallback: Oops, unable to copy', err);
-                            alert('Failed to copy code. Please select and copy manually.');
-                        }
-                        document.body.removeChild(textArea);
-                    });
-            }
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (link.getAttribute('target') !== '_blank') {
+          navLinksContainer.classList.remove('active');
+          hamburger.querySelector('i').classList.remove('fa-times');
+          hamburger.querySelector('i').classList.add('fa-bars');
         }
-    </script>
+      });
+    });
+
+    function copyCode(buttonElement) {
+      const codeBlock = buttonElement.previousElementSibling.querySelector('code');
+      if (codeBlock) {
+        navigator.clipboard.writeText(codeBlock.textContent)
+          .then(() => {
+            buttonElement.textContent = "Copied!";
+            setTimeout(() => {
+              buttonElement.textContent = "Copy Code";
+            }, 2000);
+          })
+          .catch(() => {
+            const textArea = document.createElement("textarea");
+            textArea.value = codeBlock.textContent;
+            textArea.style.position = "fixed";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+              document.execCommand('copy');
+              buttonElement.textContent = "Copied!";
+              setTimeout(() => {
+                buttonElement.textContent = "Copy Code";
+              }, 2000);
+            } catch {
+              alert('Failed to copy code. Please select and copy manually.');
+            }
+            document.body.removeChild(textArea);
+          });
+      }
+    }
+  </script>
 </body>
 </html>
