@@ -103,6 +103,7 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-top: 120px;
   padding: 80px 0;
   gap: 40px;
   flex-wrap: wrap;
