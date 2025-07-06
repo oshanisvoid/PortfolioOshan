@@ -44,8 +44,12 @@ a:hover {
   background-color: var(--dark-bg);
   padding: 20px 0;
   border-bottom: 1px solid var(--border-color);
-  position: relative;
+  position: fixed; /* ✅ Fixed at top */
+  top: 0;
+  width: 100%;
+  z-index: 1000; /* Keep it above other elements */
 }
+
 
 .navbar .container {
   display: flex;
