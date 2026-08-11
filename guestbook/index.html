@@ -1,105 +1,64 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Guestbook | Oshan Paudel</title>
-  <meta name="description" content="Leave a message in Oshan Paudel's developer portfolio guestbook." />
-  <meta name="keywords" content="Oshan Paudel, developer, software developer, web developer, Minecraft developer, Java, JavaScript, Python, portfolio" />
-  <meta name="author" content="Oshan Paudel" />
-  <link rel="canonical" href="https://oshanpaudel.com.np/guestbook" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Guestbook | Oshan Paudel" />
-  <meta property="og:description" content="Leave a message in Oshan Paudel's developer portfolio guestbook." />
-  <meta property="og:url" content="https://oshanpaudel.com.np/guestbook" />
-  <meta property="og:image" content="https://oshanpaudel.com.np/notzercup.png" />
-  <meta property="og:site_name" content="Oshan Paudel" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Guestbook | Oshan Paudel" />
-  <meta name="twitter:description" content="Leave a message in Oshan Paudel's developer portfolio guestbook." />
-  <meta name="twitter:image" content="https://oshanpaudel.com.np/notzercup.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <link rel="icon" href="/notzercup.png" type="image/png" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guestbook | Oshan.Codes</title>
+<meta name="description" content="Leave a message in Oshan Paudel's developer portfolio guestbook.">
+<link rel="canonical" href="https://oshanpaudel.com.np/guestbook">
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/guestbook.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="icon" href="/notzercup.png" type="image/png">
 </head>
 <body>
-<header class="navbar">
-  <div class="container">
-    <a class="logo" href="/" aria-label="Oshan Paudel home">Oshan.Codes</a>
-    <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
-      <i class="fas fa-bars"></i>
-    </button>
-    <nav class="nav-links-container" aria-label="Primary navigation">
-      <ul class="nav-links">
-        <li><a href="/about">About</a></li>
-<li><a href="/projects">Projects</a></li>
-<li><a href="/contact">Contact</a></li>
-<li><a href="/guestbook" class="active-nav">Guestbook</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
+<header class="navbar"><div class="container">
+<a class="logo" href="/">Oshan.Codes</a>
+<button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
+<nav class="nav-links-container" aria-label="Primary navigation"><ul class="nav-links">
+<li><a href="/about">About</a></li><li><a href="/projects">Projects</a></li><li><a href="/contact">Contact</a></li><li><a href="/guestbook" class="active-nav">Guestbook</a></li>
+</ul></nav>
+</div></header>
 
-<main class="container">
+<main class="guestbook-page"><section class="guestbook-shell">
+<div class="guestbook-hero">
+<h1>Guestbook</h1>
+<p>Leave a comment below. It could be anything — appreciation, information, wisdom, anything good or bad about me, or even humor.</p>
+</div>
 
-<section class="page-hero">
-  <h1>Guestbook</h1>
-  <p>Sign in with Google, leave a message, and see what everyone has written.</p>
+<section class="guestbook-composer">
+<div id="guest-signed-out">
+<div class="guestbook-login"><span>Sign in with Google to leave a message.</span>
+<button class="guestbook-login-button" id="google-login" type="button">Continue with Google</button></div>
+<p id="auth-status" class="guestbook-status" role="status"></p>
+</div>
+
+<div id="guest-signed-in" class="hidden">
+<div class="guestbook-user-row">
+<div id="guest-avatar" class="guestbook-avatar"></div>
+<div class="guestbook-user-info">
+<div class="guestbook-user-label">Signed in as <strong id="guest-user-name"></strong></div>
+<div id="guest-user-email" class="guestbook-email"></div>
+</div>
+<button id="google-logout" class="guestbook-signout" type="button">Sign out</button>
+</div>
+<form id="guestbook-form">
+<div class="guestbook-input-wrap">
+<textarea id="guest-message" class="guestbook-input" rows="2" minlength="2" maxlength="500" required placeholder="Leave a message or some kudos!"></textarea>
+<button id="guestbook-submit" class="guestbook-send" type="submit" aria-label="Post message"><i class="fas fa-paper-plane"></i></button>
+</div>
+<p id="guestbook-status" class="guestbook-status" role="status"></p>
+</form>
+</div>
 </section>
 
-<section class="content-section">
-  <div class="form-card">
-    <div id="guest-signed-out">
-      <h2 style="margin-top:0;">Sign in to write</h2>
-      <p>Use your Google account to sign the guestbook.</p>
-      <button class="button primary" type="button" id="google-login">
-        <i class="fab fa-google"></i> Continue with Google
-      </button>
-      <p class="form-status" id="auth-status" role="status" aria-live="polite"></p>
-    </div>
-
-    <div id="guest-signed-in" class="hidden">
-      <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
-        <img id="guest-avatar" src="" alt="" style="width:48px;height:48px;border-radius:50%;border:1px solid var(--border-color);object-fit:cover;">
-        <div>
-          <strong id="guest-user-name"></strong>
-          <div><small id="guest-user-email" style="color:var(--light-text);"></small></div>
-        </div>
-      </div>
-
-      <form id="guestbook-form">
-        <div class="form-group">
-          <label for="guest-message">Your message</label>
-          <textarea id="guest-message" name="message" minlength="2" maxlength="500" required placeholder="Write something..."></textarea>
-        </div>
-        <button class="button primary" type="submit" id="guestbook-submit">
-          <i class="fas fa-signature"></i> Sign Guestbook
-        </button>
-        <button class="button" type="button" id="google-logout">
-          <i class="fas fa-sign-out-alt"></i> Sign Out
-        </button>
-        <p class="form-status" id="guestbook-status" role="status" aria-live="polite"></p>
-      </form>
-    </div>
-  </div>
-
-  <div class="guestbook-list" id="guestbook-list" aria-live="polite">
-    <p class="loading-state">Loading guestbook messages...</p>
-  </div>
+<section id="guestbook-list" class="guestbook-list" aria-live="polite">
+<p class="guestbook-loading">Loading guestbook messages...</p>
 </section>
+</section></main>
 
-</main>
-
-<footer class="footer">
-  <div class="container">
-    <p>&copy; 2026 Oshan Paudel. All rights reserved.</p>
-  </div>
-</footer>
-
+<div id="guestbook-toast" class="guestbook-toast" role="status"></div>
+<footer class="footer"><div class="container"><p>&copy; 2026 Oshan Paudel. All rights reserved.</p></div></footer>
 <script type="module" src="/guestbook-auth.js"></script>
 <script src="/script.js" defer></script>
-</body>
-</html>
+</body></html>
