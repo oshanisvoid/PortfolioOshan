@@ -25,7 +25,6 @@
 
     <link rel="icon" href="/notzercup.png" type="image/png">
 
-    <!-- Guestbook-specific layout fix -->
     <style>
         /* =====================================================
            PAGE LAYOUT
@@ -42,7 +41,6 @@
             flex-direction: column;
         }
 
-        /* Fixed navbar needs space below it */
         .navbar {
             position: fixed;
             top: 0;
@@ -51,28 +49,18 @@
             z-index: 1000;
         }
 
-        /* Main content fills the available screen */
         .guestbook-page {
             flex: 1 0 auto;
             width: 100%;
             box-sizing: border-box;
-
-            /*
-             * Navbar is approximately 70px high.
-             * Extra space prevents the heading from touching it.
-             */
             padding-top: 105px;
-
             overflow: visible;
         }
 
-        /* Actual guestbook content */
         .guestbook-shell {
             width: min(700px, calc(100% - 32px));
             margin: 0 auto;
-
             padding: 35px 0 90px;
-
             box-sizing: border-box;
         }
 
@@ -89,23 +77,17 @@
 
         .guestbook-hero h1 {
             margin: 0 0 14px;
-
             color: var(--gb-text, #f0f0f0);
-
             font-size: clamp(2rem, 6vw, 2.8rem);
             line-height: 1.15;
             font-weight: 700;
-
             letter-spacing: -0.02em;
         }
 
         .guestbook-hero p {
             margin: 0;
-
             max-width: 650px;
-
             color: var(--gb-muted, #999);
-
             font-size: 1rem;
             line-height: 1.7;
         }
@@ -117,13 +99,36 @@
         .guestbook-composer {
             width: 100%;
             box-sizing: border-box;
-
             margin: 0 0 30px;
             padding: 18px;
-
             background: #252525;
             border: 1px solid rgba(255,255,255,.08);
             border-radius: 9px;
+        }
+
+        /* =====================================================
+           LOGIN BUTTONS
+           ===================================================== */
+
+        .guestbook-login {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .guestbook-login-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .guestbook-login-button {
+            cursor: pointer;
+        }
+
+        .guestbook-login-button:disabled {
+            opacity: .6;
+            cursor: not-allowed;
         }
 
         /* =====================================================
@@ -134,16 +139,13 @@
             width: 100%;
             margin: 0;
             padding: 0;
-
             box-sizing: border-box;
         }
 
         .guestbook-entry {
             width: 100%;
             box-sizing: border-box;
-
             padding: 18px 0 21px;
-
             border-bottom: 1px solid rgba(255,255,255,.08);
         }
 
@@ -167,7 +169,6 @@
            ===================================================== */
 
         @media (max-width: 768px) {
-
             .guestbook-page {
                 padding-top: 95px;
             }
@@ -193,7 +194,6 @@
         }
 
         @media (max-width: 480px) {
-
             .guestbook-page {
                 padding-top: 92px;
             }
@@ -215,10 +215,17 @@
             .guestbook-composer {
                 padding: 14px;
             }
+
+            .guestbook-login-buttons {
+                flex-direction: column;
+            }
+
+            .guestbook-login-button {
+                width: 100%;
+            }
         }
 
         @media (max-width: 380px) {
-
             .guestbook-page {
                 padding-top: 88px;
             }
@@ -304,7 +311,7 @@
 
         <section class="guestbook-shell">
 
-            <!-- Header -->
+            <!-- HEADER -->
 
             <div class="guestbook-hero">
 
@@ -334,16 +341,30 @@
                     <div class="guestbook-login">
 
                         <span>
-                            Sign in with Google to leave a message.
+                            Sign in to leave a message.
                         </span>
 
-                        <button
-                            class="guestbook-login-button"
-                            id="google-login"
-                            type="button"
-                        >
-                            Continue with Google
-                        </button>
+                        <div class="guestbook-login-buttons">
+
+                            <button
+                                class="guestbook-login-button"
+                                id="google-login"
+                                type="button"
+                            >
+                                <i class="fab fa-google"></i>
+                                Continue with Google
+                            </button>
+
+                            <button
+                                class="guestbook-login-button"
+                                id="github-login"
+                                type="button"
+                            >
+                                <i class="fab fa-github"></i>
+                                Continue with GitHub
+                            </button>
+
+                        </div>
 
                     </div>
 
@@ -485,14 +506,891 @@
 
 
     <!-- =====================================================
-         SCRIPTS
+         FIREBASE + AUTH + FIRESTORE
+         EVERYTHING IN THIS ONE FILE
          ===================================================== -->
 
-    <script
-        type="module"
-        src="/guestbook-auth.js"
-    ></script>
+    <script type="module">
 
+        /* =====================================================
+           FIREBASE IMPORTS
+           ===================================================== */
+
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+        import {
+            getAuth,
+            GoogleAuthProvider,
+            GithubAuthProvider,
+            signInWithPopup,
+            signOut,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+        import {
+            getFirestore,
+            collection,
+            addDoc,
+            onSnapshot,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+        /* =====================================================
+           FIREBASE CONFIG
+           ===================================================== */
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDRHmvYcFb6jzPAWrtK6udMZ8mCc8y39w0",
+            authDomain: "myselfoshan.firebaseapp.com",
+            projectId: "myselfoshan",
+            storageBucket: "myselfoshan.firebasestorage.app",
+            messagingSenderId: "808907746677",
+            appId: "1:808907746677:web:228643fd7924f51d20f73c",
+            measurementId: "G-DG6CLVCW1R"
+        };
+
+
+        /* =====================================================
+           INITIALIZE FIREBASE
+           ===================================================== */
+
+        const app = initializeApp(firebaseConfig);
+
+        const auth = getAuth(app);
+
+        const db = getFirestore(app);
+
+
+        /* =====================================================
+           ELEMENTS
+           ===================================================== */
+
+        const $ = id =>
+            document.getElementById(id);
+
+        const signedOut =
+            $("guest-signed-out");
+
+        const signedIn =
+            $("guest-signed-in");
+
+        const googleLogin =
+            $("google-login");
+
+        const githubLogin =
+            $("github-login");
+
+        const logout =
+            $("google-logout");
+
+        const authStatus =
+            $("auth-status");
+
+        const form =
+            $("guestbook-form");
+
+        const input =
+            $("guest-message");
+
+        const submit =
+            $("guestbook-submit");
+
+        const status =
+            $("guestbook-status");
+
+        const list =
+            $("guestbook-list");
+
+        const toast =
+            $("guestbook-toast");
+
+
+        let user = null;
+
+
+        /* =====================================================
+           TOAST
+           ===================================================== */
+
+        function toastMsg(text, error = false) {
+
+            toast.textContent = text;
+
+            toast.className =
+                "guestbook-toast show" +
+                (error ? " error" : "");
+
+            clearTimeout(toastMsg.timer);
+
+            toastMsg.timer =
+                setTimeout(() => {
+                    toast.classList.remove("show");
+                }, 3000);
+        }
+
+
+        /* =====================================================
+           DATE
+           ===================================================== */
+
+        function dateOf(timestamp) {
+
+            if (
+                timestamp &&
+                typeof timestamp.toDate === "function"
+            ) {
+                return timestamp.toDate();
+            }
+
+            if (timestamp instanceof Date) {
+                return timestamp;
+            }
+
+            return null;
+        }
+
+
+        /* =====================================================
+           RELATIVE TIME
+           ===================================================== */
+
+        function relative(date) {
+
+            if (!date) {
+                return "just now";
+            }
+
+            const seconds = Math.max(
+                0,
+                (Date.now() - date.getTime()) / 1000
+            );
+
+            if (seconds < 60) {
+                return "less than a minute ago";
+            }
+
+            const minutes =
+                Math.floor(seconds / 60);
+
+            if (minutes < 60) {
+                return `${minutes} minute${
+                    minutes === 1 ? "" : "s"
+                } ago`;
+            }
+
+            const hours =
+                Math.floor(minutes / 60);
+
+            if (hours < 24) {
+                return `${hours} hour${
+                    hours === 1 ? "" : "s"
+                } ago`;
+            }
+
+            const days =
+                Math.floor(hours / 24);
+
+            if (days < 30) {
+                return `${days} day${
+                    days === 1 ? "" : "s"
+                } ago`;
+            }
+
+            const months =
+                Math.floor(days / 30);
+
+            if (months < 12) {
+                return `${months} month${
+                    months === 1 ? "" : "s"
+                } ago`;
+            }
+
+            const years =
+                Math.floor(months / 12);
+
+            return `${years} year${
+                years === 1 ? "" : "s"
+            } ago`;
+        }
+
+
+        /* =====================================================
+           AVATAR
+           ===================================================== */
+
+        function avatar(url, name) {
+
+            const element =
+                document.createElement("div");
+
+            element.className =
+                "guestbook-avatar";
+
+            if (url) {
+
+                const image =
+                    document.createElement("img");
+
+                image.src = url;
+                image.alt = "";
+                image.referrerPolicy =
+                    "no-referrer";
+
+                image.onerror = () => {
+
+                    image.remove();
+
+                    element.textContent =
+                        (name || "A")[0]
+                            .toUpperCase();
+                };
+
+                element.append(image);
+
+            } else {
+
+                element.textContent =
+                    (name || "A")[0]
+                        .toUpperCase();
+            }
+
+            return element;
+        }
+
+
+        /* =====================================================
+           RENDER GUESTBOOK
+           ===================================================== */
+
+        function render(items) {
+
+            list.innerHTML = "";
+
+            if (!items.length) {
+
+                list.innerHTML =
+                    '<p class="guestbook-empty">' +
+                    'No messages yet. Be the first to ' +
+                    'sign the guestbook.' +
+                    '</p>';
+
+                return;
+            }
+
+            items.sort(
+                (a, b) =>
+                    (b.createdAt?.getTime?.() || 0) -
+                    (a.createdAt?.getTime?.() || 0)
+            );
+
+
+            for (const item of items) {
+
+                const article =
+                    document.createElement("article");
+
+                article.className =
+                    "guestbook-entry";
+
+
+                const top =
+                    document.createElement("div");
+
+                top.className =
+                    "guestbook-entry-top";
+
+
+                top.append(
+                    avatar(
+                        item.photoURL,
+                        item.displayName
+                    )
+                );
+
+
+                const identity =
+                    document.createElement("div");
+
+                identity.className =
+                    "guestbook-identity";
+
+
+                const nameLine =
+                    document.createElement("div");
+
+                nameLine.className =
+                    "guestbook-name-line";
+
+
+                const name =
+                    document.createElement("span");
+
+                name.className =
+                    "guestbook-name";
+
+                name.textContent =
+                    item.displayName ||
+                    "Anonymous";
+
+
+                const signed =
+                    document.createElement("span");
+
+                signed.className =
+                    "guestbook-signed";
+
+                signed.textContent =
+                    "signed the guestbook";
+
+
+                nameLine.append(
+                    name,
+                    signed
+                );
+
+
+                const time =
+                    document.createElement("time");
+
+                time.className =
+                    "guestbook-time";
+
+                time.textContent =
+                    relative(item.createdAt);
+
+
+                if (item.createdAt) {
+                    time.dateTime =
+                        item.createdAt.toISOString();
+                }
+
+
+                identity.append(
+                    nameLine,
+                    time
+                );
+
+
+                top.append(identity);
+
+
+                const message =
+                    document.createElement("p");
+
+                message.className =
+                    "guestbook-message";
+
+                message.textContent =
+                    item.message;
+
+
+                article.append(
+                    top,
+                    message
+                );
+
+
+                list.append(article);
+            }
+        }
+
+
+        /* =====================================================
+           UPDATE USER
+           ===================================================== */
+
+        function updateUser(currentUser) {
+
+            user = currentUser;
+
+            signedOut.classList.toggle(
+                "hidden",
+                !!currentUser
+            );
+
+            signedIn.classList.toggle(
+                "hidden",
+                !currentUser
+            );
+
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            const name =
+                currentUser.displayName ||
+                "User";
+
+
+            $("guest-user-name")
+                .textContent = name;
+
+
+            $("guest-user-email")
+                .textContent =
+                    currentUser.email || "";
+
+
+            const userAvatar =
+                $("guest-avatar");
+
+            userAvatar.innerHTML = "";
+
+
+            if (currentUser.photoURL) {
+
+                const image =
+                    document.createElement("img");
+
+                image.src =
+                    currentUser.photoURL;
+
+                image.alt = "";
+
+                image.referrerPolicy =
+                    "no-referrer";
+
+                userAvatar.append(image);
+
+            } else {
+
+                userAvatar.textContent =
+                    name[0].toUpperCase();
+            }
+        }
+
+
+        /* =====================================================
+           GOOGLE LOGIN
+           ===================================================== */
+
+        async function loginWithGoogle() {
+
+            googleLogin.disabled = true;
+
+            authStatus.className =
+                "guestbook-status";
+
+            authStatus.textContent =
+                "Opening Google login...";
+
+
+            try {
+
+                const provider =
+                    new GoogleAuthProvider();
+
+                provider.setCustomParameters({
+                    prompt: "select_account"
+                });
+
+
+                await signInWithPopup(
+                    auth,
+                    provider
+                );
+
+
+                authStatus.textContent = "";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Google login error:",
+                    error
+                );
+
+
+                authStatus.className =
+                    "guestbook-status error";
+
+
+                if (
+                    error.code ===
+                    "auth/unauthorized-domain"
+                ) {
+
+                    authStatus.textContent =
+                        "This website domain is not authorized in Firebase.";
+
+                } else if (
+                    error.code ===
+                    "auth/popup-closed-by-user"
+                ) {
+
+                    authStatus.textContent = "";
+
+                } else {
+
+                    authStatus.textContent =
+                        "Google login failed. Check Firebase Authentication.";
+
+                    toastMsg(
+                        "Google login failed.",
+                        true
+                    );
+                }
+
+            } finally {
+
+                googleLogin.disabled = false;
+            }
+        }
+
+
+        /* =====================================================
+           GITHUB LOGIN
+           ===================================================== */
+
+        async function loginWithGithub() {
+
+            githubLogin.disabled = true;
+
+            authStatus.className =
+                "guestbook-status";
+
+            authStatus.textContent =
+                "Opening GitHub login...";
+
+
+            try {
+
+                const provider =
+                    new GithubAuthProvider();
+
+
+                await signInWithPopup(
+                    auth,
+                    provider
+                );
+
+
+                authStatus.textContent = "";
+
+
+            } catch (error) {
+
+                console.error(
+                    "GitHub login error:",
+                    error
+                );
+
+
+                authStatus.className =
+                    "guestbook-status error";
+
+
+                if (
+                    error.code ===
+                    "auth/unauthorized-domain"
+                ) {
+
+                    authStatus.textContent =
+                        "This website domain is not authorized in Firebase.";
+
+
+                } else if (
+                    error.code ===
+                    "auth/popup-closed-by-user"
+                ) {
+
+                    authStatus.textContent = "";
+
+
+                } else if (
+                    error.code ===
+                    "auth/account-exists-with-different-credential"
+                ) {
+
+                    authStatus.textContent =
+                        "This email already has an account using another login method.";
+
+                    toastMsg(
+                        "This email is already registered with another login method.",
+                        true
+                    );
+
+
+                } else {
+
+                    authStatus.textContent =
+                        "GitHub login failed. Check your Firebase GitHub provider settings.";
+
+                    toastMsg(
+                        "GitHub login failed.",
+                        true
+                    );
+                }
+
+            } finally {
+
+                githubLogin.disabled = false;
+            }
+        }
+
+
+        /* =====================================================
+           LOGOUT
+           ===================================================== */
+
+        async function logoutUser() {
+
+            try {
+
+                await signOut(auth);
+
+                toastMsg(
+                    "Signed out successfully."
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Logout error:",
+                    error
+                );
+
+                toastMsg(
+                    "Could not sign out.",
+                    true
+                );
+            }
+        }
+
+
+        /* =====================================================
+           POST MESSAGE
+           ===================================================== */
+
+        async function post(event) {
+
+            event.preventDefault();
+
+
+            if (!user) {
+
+                toastMsg(
+                    "Please sign in first.",
+                    true
+                );
+
+                return;
+            }
+
+
+            const message =
+                input.value.trim();
+
+
+            if (message.length < 2) {
+
+                toastMsg(
+                    "Please write at least 2 characters.",
+                    true
+                );
+
+                return;
+            }
+
+
+            submit.disabled = true;
+            input.disabled = true;
+
+            status.className =
+                "guestbook-status";
+
+            status.textContent =
+                "Posting...";
+
+
+            try {
+
+                await addDoc(
+                    collection(
+                        db,
+                        "guestbook"
+                    ),
+                    {
+                        uid: user.uid,
+
+                        displayName:
+                            user.displayName ||
+                            "Anonymous",
+
+                        photoURL:
+                            user.photoURL ||
+                            "",
+
+                        message:
+
+                            message,
+
+                        createdAt:
+                            serverTimestamp()
+                    }
+                );
+
+
+                form.reset();
+
+                status.textContent = "";
+
+                toastMsg(
+                    "Message posted!"
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Firestore error:",
+                    error
+                );
+
+
+                status.className =
+                    "guestbook-status error";
+
+
+                if (
+                    error.code ===
+                    "permission-denied"
+                ) {
+
+                    status.textContent =
+                        "Firestore rules blocked this post.";
+
+                } else {
+
+                    status.textContent =
+                        "Could not post the message.";
+                }
+
+
+                toastMsg(
+                    "Message could not be posted.",
+                    true
+                );
+
+
+            } finally {
+
+                submit.disabled = false;
+                input.disabled = false;
+            }
+        }
+
+
+        /* =====================================================
+           AUTH STATE
+           ===================================================== */
+
+        onAuthStateChanged(
+            auth,
+            updateUser
+        );
+
+
+        /* =====================================================
+           LOAD GUESTBOOK
+           ===================================================== */
+
+        onSnapshot(
+            collection(
+                db,
+                "guestbook"
+            ),
+
+            snapshot => {
+
+                const messages =
+                    snapshot.docs.map(
+                        document => {
+
+                            const data =
+                                document.data();
+
+                            return {
+
+                                displayName:
+                                    data.displayName ||
+                                    "Anonymous",
+
+                                photoURL:
+                                    data.photoURL ||
+                                    "",
+
+                                message:
+                                    data.message ||
+                                    "",
+
+                                createdAt:
+                                    dateOf(
+                                        data.createdAt
+                                    )
+                            };
+                        }
+                    );
+
+
+                render(messages);
+            },
+
+
+            error => {
+
+                console.error(
+                    "Firestore read error:",
+                    error
+                );
+
+
+                list.innerHTML =
+                    '<p class="guestbook-empty guestbook-error">' +
+                    'Messages could not be loaded. ' +
+                    'Check Firestore Rules or browser blocking.' +
+                    '</p>';
+            }
+        );
+
+
+        /* =====================================================
+           EVENT LISTENERS
+           ===================================================== */
+
+        googleLogin?.addEventListener(
+            "click",
+            loginWithGoogle
+        );
+
+
+        githubLogin?.addEventListener(
+            "click",
+            loginWithGithub
+        );
+
+
+        logout?.addEventListener(
+            "click",
+            logoutUser
+        );
+
+
+        form?.addEventListener(
+            "submit",
+            post
+        );
+
+    </script>
+
+
+    <!-- Your existing website JavaScript -->
     <script
         src="/script.js"
         defer

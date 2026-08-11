@@ -1,21 +1,520 @@
-import{initializeApp}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-import{getFirestore,collection,addDoc,onSnapshot,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-import{firebaseConfig}from"./firebase-config.js";
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-const $=id=>document.getElementById(id);
-const signedOut=$("guest-signed-out"),signedIn=$("guest-signed-in"),login=$("google-login"),logout=$("google-logout");
-const authStatus=$("auth-status"),form=$("guestbook-form"),input=$("guest-message"),submit=$("guestbook-submit"),status=$("guestbook-status"),list=$("guestbook-list"),toast=$("guestbook-toast");
-let auth,db,user,unsubscribe;
+import {
+  getAuth,
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-function toastMsg(text,error=false){toast.textContent=text;toast.className="guestbook-toast show"+(error?" error":"");clearTimeout(toastMsg.t);toastMsg.t=setTimeout(()=>toast.classList.remove("show"),3000)}
-function dateOf(t){return t&&typeof t.toDate==="function"?t.toDate():t instanceof Date?t:null}
-function relative(d){if(!d)return"just now";let s=Math.max(0,(Date.now()-d.getTime())/1000);if(s<60)return"less than a minute ago";let m=Math.floor(s/60);if(m<60)return`${m} minute${m===1?"":"s"} ago`;let h=Math.floor(m/60);if(h<24)return`${h} hour${h===1?"":"s"} ago`;let days=Math.floor(h/24);if(days<30)return`${days} day${days===1?"":"s"} ago`;let months=Math.floor(days/30);if(months<12)return`${months} month${months===1?"":"s"} ago`;let years=Math.floor(months/12);return`${years} year${years===1?"":"s"} ago`}
-function avatar(url,name){let a=document.createElement("div");a.className="guestbook-avatar";if(url){let i=document.createElement("img");i.src=url;i.alt="";i.referrerPolicy="no-referrer";i.onerror=()=>{i.remove();a.textContent=(name||"A")[0].toUpperCase()};a.append(i)}else a.textContent=(name||"A")[0].toUpperCase();return a}
-function render(items){list.innerHTML="";if(!items.length){list.innerHTML='<p class="guestbook-empty">No messages yet. Be the first to sign the guestbook.</p>';return}items.sort((a,b)=>(b.createdAt?.getTime?.()||0)-(a.createdAt?.getTime?.()||0));for(const x of items){let e=document.createElement("article");e.className="guestbook-entry";let top=document.createElement("div");top.className="guestbook-entry-top";top.append(avatar(x.photoURL,x.displayName));let id=document.createElement("div");id.className="guestbook-identity";let line=document.createElement("div");line.className="guestbook-name-line";let n=document.createElement("span");n.className="guestbook-name";n.textContent=x.displayName||"Anonymous";let s=document.createElement("span");s.className="guestbook-signed";s.textContent="signed the guestbook";line.append(n,s);let time=document.createElement("time");time.className="guestbook-time";time.textContent=relative(x.createdAt);if(x.createdAt)time.dateTime=x.createdAt.toISOString();id.append(line,time);top.append(id);let msg=document.createElement("p");msg.className="guestbook-message";msg.textContent=x.message;e.append(top,msg);list.append(e)}}
-function updateUser(u){user=u;signedOut.classList.toggle("hidden",!!u);signedIn.classList.toggle("hidden",!u);if(!u)return;let name=u.displayName||"Google user";$("guest-user-name").textContent=name;$("guest-user-email").textContent=u.email||"";let a=$("guest-avatar");a.innerHTML="";if(u.photoURL){let i=document.createElement("img");i.src=u.photoURL;i.alt="";i.referrerPolicy="no-referrer";a.append(i)}else a.textContent=name[0].toUpperCase()}
-async function loginUser(){login.disabled=true;authStatus.textContent="Opening Google login...";try{let p=new GoogleAuthProvider();p.setCustomParameters({prompt:"select_account"});await signInWithPopup(auth,p);authStatus.textContent=""}catch(e){console.error(e);authStatus.className="guestbook-status error";authStatus.textContent=e.code==="auth/unauthorized-domain"?"This website domain is not authorized in Firebase.":"Google login failed. Check Firebase Authentication."}finally{login.disabled=false}}
-async function post(e){e.preventDefault();if(!user)return toastMsg("Please sign in first.",true);let message=input.value.trim();if(message.length<2)return toastMsg("Please write at least 2 characters.",true);submit.disabled=true;input.disabled=true;status.textContent="Posting...";try{await addDoc(collection(db,"guestbook"),{uid:user.uid,displayName:user.displayName||"Anonymous",photoURL:user.photoURL||"",message,createdAt:serverTimestamp()});form.reset();status.textContent="";toastMsg("Message posted!")}catch(e){console.error(e);status.className="guestbook-status error";status.textContent=e.code==="permission-denied"?"Firestore rules blocked this post.":"Could not post the message.";toastMsg("Message could not be posted.",true)}finally{submit.disabled=false;input.disabled=false}}
-function start(){try{let app=initializeApp(firebaseConfig);auth=getAuth(app);db=getFirestore(app);onAuthStateChanged(auth,updateUser);unsubscribe=onSnapshot(collection(db,"guestbook"),snap=>render(snap.docs.map(d=>{let x=d.data();return{displayName:x.displayName||"Anonymous",photoURL:x.photoURL||"",message:x.message||"",createdAt:dateOf(x.createdAt)}})),e=>{console.error("Firestore read error:",e);list.innerHTML='<p class="guestbook-empty guestbook-error">Messages could not be loaded. Check Firestore Rules or browser blocking.</p>'})}catch(e){console.error(e);authStatus.className="guestbook-status error";authStatus.textContent="Firebase could not be initialized."}}
-login?.addEventListener("click",loginUser);logout?.addEventListener("click",()=>signOut(auth));form?.addEventListener("submit",post);
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  onSnapshot,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+import { firebaseConfig } from "./firebase-config.js";
+
+
+const $ = id => document.getElementById(id);
+
+const signedOut = $("guest-signed-out");
+const signedIn = $("guest-signed-in");
+
+const login = $("google-login");
+const githubLogin = $("github-login");
+const logout = $("google-logout");
+
+const authStatus = $("auth-status");
+const form = $("guestbook-form");
+const input = $("guest-message");
+const submit = $("guestbook-submit");
+const status = $("guestbook-status");
+const list = $("guestbook-list");
+const toast = $("guestbook-toast");
+
+let auth, db, user, unsubscribe;
+
+
+/* =========================================
+   Toast
+========================================= */
+
+function toastMsg(text, error = false) {
+  toast.textContent = text;
+  toast.className = "guestbook-toast show" + (error ? " error" : "");
+
+  clearTimeout(toastMsg.t);
+
+  toastMsg.t = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
+}
+
+
+/* =========================================
+   Date Helpers
+========================================= */
+
+function dateOf(t) {
+  return t && typeof t.toDate === "function"
+    ? t.toDate()
+    : t instanceof Date
+      ? t
+      : null;
+}
+
+
+function relative(d) {
+  if (!d) return "just now";
+
+  let s = Math.max(
+    0,
+    (Date.now() - d.getTime()) / 1000
+  );
+
+  if (s < 60)
+    return "less than a minute ago";
+
+  let m = Math.floor(s / 60);
+
+  if (m < 60)
+    return `${m} minute${m === 1 ? "" : "s"} ago`;
+
+  let h = Math.floor(m / 60);
+
+  if (h < 24)
+    return `${h} hour${h === 1 ? "" : "s"} ago`;
+
+  let days = Math.floor(h / 24);
+
+  if (days < 30)
+    return `${days} day${days === 1 ? "" : "s"} ago`;
+
+  let months = Math.floor(days / 30);
+
+  if (months < 12)
+    return `${months} month${months === 1 ? "" : "s"} ago`;
+
+  let years = Math.floor(months / 12);
+
+  return `${years} year${years === 1 ? "" : "s"} ago`;
+}
+
+
+/* =========================================
+   Avatar
+========================================= */
+
+function avatar(url, name) {
+  let a = document.createElement("div");
+
+  a.className = "guestbook-avatar";
+
+  if (url) {
+    let i = document.createElement("img");
+
+    i.src = url;
+    i.alt = "";
+    i.referrerPolicy = "no-referrer";
+
+    i.onerror = () => {
+      i.remove();
+      a.textContent = (name || "A")[0].toUpperCase();
+    };
+
+    a.append(i);
+  } else {
+    a.textContent = (name || "A")[0].toUpperCase();
+  }
+
+  return a;
+}
+
+
+/* =========================================
+   Render Guestbook
+========================================= */
+
+function render(items) {
+  list.innerHTML = "";
+
+  if (!items.length) {
+    list.innerHTML =
+      '<p class="guestbook-empty">No messages yet. Be the first to sign the guestbook.</p>';
+
+    return;
+  }
+
+  items.sort(
+    (a, b) =>
+      (b.createdAt?.getTime?.() || 0) -
+      (a.createdAt?.getTime?.() || 0)
+  );
+
+  for (const x of items) {
+    let e = document.createElement("article");
+
+    e.className = "guestbook-entry";
+
+    let top = document.createElement("div");
+
+    top.className = "guestbook-entry-top";
+
+    top.append(
+      avatar(
+        x.photoURL,
+        x.displayName
+      )
+    );
+
+    let id = document.createElement("div");
+
+    id.className = "guestbook-identity";
+
+    let line = document.createElement("div");
+
+    line.className = "guestbook-name-line";
+
+    let n = document.createElement("span");
+
+    n.className = "guestbook-name";
+    n.textContent = x.displayName || "Anonymous";
+
+    let s = document.createElement("span");
+
+    s.className = "guestbook-signed";
+    s.textContent = "signed the guestbook";
+
+    line.append(n, s);
+
+    let time = document.createElement("time");
+
+    time.className = "guestbook-time";
+    time.textContent = relative(x.createdAt);
+
+    if (x.createdAt) {
+      time.dateTime = x.createdAt.toISOString();
+    }
+
+    id.append(line, time);
+
+    top.append(id);
+
+    let msg = document.createElement("p");
+
+    msg.className = "guestbook-message";
+    msg.textContent = x.message;
+
+    e.append(top, msg);
+
+    list.append(e);
+  }
+}
+
+
+/* =========================================
+   Update User UI
+========================================= */
+
+function updateUser(u) {
+  user = u;
+
+  signedOut.classList.toggle("hidden", !!u);
+  signedIn.classList.toggle("hidden", !u);
+
+  if (!u) return;
+
+  let name = u.displayName || "User";
+
+  $("guest-user-name").textContent = name;
+  $("guest-user-email").textContent = u.email || "";
+
+  let a = $("guest-avatar");
+
+  a.innerHTML = "";
+
+  if (u.photoURL) {
+    let i = document.createElement("img");
+
+    i.src = u.photoURL;
+    i.alt = "";
+    i.referrerPolicy = "no-referrer";
+
+    a.append(i);
+  } else {
+    a.textContent = name[0].toUpperCase();
+  }
+}
+
+
+/* =========================================
+   Google Login
+========================================= */
+
+async function loginUser() {
+  login.disabled = true;
+
+  authStatus.className = "guestbook-status";
+  authStatus.textContent = "Opening Google login...";
+
+  try {
+    let p = new GoogleAuthProvider();
+
+    p.setCustomParameters({
+      prompt: "select_account"
+    });
+
+    await signInWithPopup(auth, p);
+
+    authStatus.textContent = "";
+
+  } catch (e) {
+    console.error(e);
+
+    authStatus.className = "guestbook-status error";
+
+    if (e.code === "auth/unauthorized-domain") {
+      authStatus.textContent =
+        "This website domain is not authorized in Firebase.";
+    } else {
+      authStatus.textContent =
+        "Google login failed. Check Firebase Authentication.";
+    }
+
+  } finally {
+    login.disabled = false;
+  }
+}
+
+
+/* =========================================
+   GitHub Login
+========================================= */
+
+async function loginWithGithub() {
+  githubLogin.disabled = true;
+
+  authStatus.className = "guestbook-status";
+  authStatus.textContent = "Opening GitHub login...";
+
+  try {
+    const provider = new GithubAuthProvider();
+
+    await signInWithPopup(auth, provider);
+
+    authStatus.textContent = "";
+
+  } catch (e) {
+    console.error("GitHub login error:", e);
+
+    authStatus.className = "guestbook-status error";
+
+    if (e.code === "auth/unauthorized-domain") {
+      authStatus.textContent =
+        "This website domain is not authorized in Firebase.";
+
+    } else if (e.code === "auth/popup-closed-by-user") {
+      authStatus.textContent = "";
+
+    } else if (e.code === "auth/account-exists-with-different-credential") {
+      authStatus.textContent =
+        "An account already exists with this email using another login method.";
+
+      toastMsg(
+        "This email is already registered with another login method.",
+        true
+      );
+
+    } else {
+      authStatus.textContent =
+        "GitHub login failed. Check your Firebase GitHub provider settings.";
+
+      toastMsg(
+        "GitHub login failed.",
+        true
+      );
+    }
+
+  } finally {
+    githubLogin.disabled = false;
+  }
+}
+
+
+/* =========================================
+   Post Guestbook Message
+========================================= */
+
+async function post(e) {
+  e.preventDefault();
+
+  if (!user) {
+    toastMsg("Please sign in first.", true);
+    return;
+  }
+
+  let message = input.value.trim();
+
+  if (message.length < 2) {
+    toastMsg(
+      "Please write at least 2 characters.",
+      true
+    );
+
+    return;
+  }
+
+  submit.disabled = true;
+  input.disabled = true;
+
+  status.textContent = "Posting...";
+
+  try {
+    await addDoc(
+      collection(db, "guestbook"),
+      {
+        uid: user.uid,
+
+        displayName:
+          user.displayName || "Anonymous",
+
+        photoURL:
+          user.photoURL || "",
+
+        message,
+
+        createdAt:
+          serverTimestamp()
+      }
+    );
+
+    form.reset();
+
+    status.textContent = "";
+
+    toastMsg("Message posted!");
+
+  } catch (e) {
+    console.error(e);
+
+    status.className =
+      "guestbook-status error";
+
+    status.textContent =
+      e.code === "permission-denied"
+        ? "Firestore rules blocked this post."
+        : "Could not post the message.";
+
+    toastMsg(
+      "Message could not be posted.",
+      true
+    );
+
+  } finally {
+    submit.disabled = false;
+    input.disabled = false;
+  }
+}
+
+
+/* =========================================
+   Firebase Initialization
+========================================= */
+
+function start() {
+  try {
+    let app = initializeApp(firebaseConfig);
+
+    auth = getAuth(app);
+
+    db = getFirestore(app);
+
+    onAuthStateChanged(
+      auth,
+      updateUser
+    );
+
+    unsubscribe = onSnapshot(
+      collection(db, "guestbook"),
+
+      snap =>
+        render(
+          snap.docs.map(d => {
+            let x = d.data();
+
+            return {
+              displayName:
+                x.displayName || "Anonymous",
+
+              photoURL:
+                x.photoURL || "",
+
+              message:
+                x.message || "",
+
+              createdAt:
+                dateOf(x.createdAt)
+            };
+          })
+        ),
+
+      e => {
+        console.error(
+          "Firestore read error:",
+          e
+        );
+
+        list.innerHTML =
+          '<p class="guestbook-empty guestbook-error">Messages could not be loaded. Check Firestore Rules or browser blocking.</p>';
+      }
+    );
+
+  } catch (e) {
+    console.error(e);
+
+    authStatus.className =
+      "guestbook-status error";
+
+    authStatus.textContent =
+      "Firebase could not be initialized.";
+  }
+}
+
+
+/* =========================================
+   Event Listeners
+========================================= */
+
+login?.addEventListener(
+  "click",
+  loginUser
+);
+
+githubLogin?.addEventListener(
+  "click",
+  loginWithGithub
+);
+
+logout?.addEventListener(
+  "click",
+  () => signOut(auth)
+);
+
+form?.addEventListener(
+  "submit",
+  post
+);
+
+
+/* =========================================
+   Start
+========================================= */
+
 start();
