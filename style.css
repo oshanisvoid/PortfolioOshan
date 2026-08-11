@@ -511,18 +511,494 @@ main.container { padding-top: 80px; }
   white-space: nowrap;
   border: 0;
 }
-:root{--gb-bg:#171717;--gb-card:#242424;--gb-border:rgba(255,255,255,.08);--gb-text:#f4f4f4;--gb-muted:#929292;--gb-accent:#65c466}
-.guestbook-page{min-height:calc(100vh - 160px)}
-.guestbook-shell{width:min(100%,700px);margin:auto;padding:70px 20px 100px}
-.guestbook-hero{margin-bottom:34px}.guestbook-hero h1{margin:0 0 16px;font-size:clamp(2rem,5vw,3rem);line-height:1.05}.guestbook-hero p{margin:0;color:var(--gb-muted);line-height:1.7}
-.guestbook-composer{background:var(--gb-card);border:1px solid var(--gb-border);border-radius:10px;padding:20px;margin-bottom:30px}
-.guestbook-user-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}.guestbook-avatar{width:42px;height:42px;min-width:42px;border-radius:5px;overflow:hidden;display:grid;place-items:center;background:#5b35bd;color:#fff;font-weight:600}.guestbook-avatar img{width:100%;height:100%;object-fit:cover}
-.guestbook-user-info{flex:1;min-width:0}.guestbook-user-label{color:var(--gb-muted);font-size:.88rem}.guestbook-user-label strong{color:var(--gb-text);font-weight:500}.guestbook-email{color:#777;font-size:.74rem;margin-top:2px}
-.guestbook-signout{border:0;background:transparent;color:var(--gb-muted);cursor:pointer;font:inherit;font-size:.82rem}.guestbook-signout:hover{color:#fff}
-.guestbook-input-wrap{display:flex;align-items:center;gap:7px;background:#191919;border-radius:6px;padding:4px 6px 4px 12px}.guestbook-input{flex:1;min-width:0;min-height:48px;resize:vertical;border:0;outline:0;background:transparent;color:var(--gb-text);font:inherit;line-height:1.5}.guestbook-input::placeholder{color:#777}
-.guestbook-send{width:42px;height:42px;border:0;border-radius:6px;background:transparent;color:#888;cursor:pointer;font-size:17px}.guestbook-send:hover:not(:disabled){color:#fff;background:rgba(255,255,255,.06)}.guestbook-send:disabled{opacity:.45;cursor:not-allowed}
-.guestbook-login{display:flex;align-items:center;justify-content:space-between;gap:16px;color:var(--gb-muted);font-size:.92rem}.guestbook-login-button{border:0;border-radius:7px;background:var(--gb-accent);color:#101010;cursor:pointer;font:inherit;font-weight:600;padding:11px 16px;white-space:nowrap}.guestbook-login-button:hover{filter:brightness(1.08)}
-.guestbook-entry{padding:17px 0 20px;border-bottom:1px solid var(--gb-border)}.guestbook-entry-top{display:flex;gap:12px;align-items:flex-start}.guestbook-identity{flex:1}.guestbook-name-line{display:flex;align-items:baseline;flex-wrap:wrap;gap:7px}.guestbook-name{color:var(--gb-text);font-weight:600}.guestbook-signed{color:#777;font-size:.9rem}.guestbook-time{display:block;color:#777;font-size:.78rem;margin-top:3px}.guestbook-message{margin:10px 0 0 54px;color:var(--gb-text);line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere}
-.guestbook-empty,.guestbook-loading{text-align:center;color:var(--gb-muted);padding:30px 0}.guestbook-error{color:#ff7474}.guestbook-status{min-height:18px;margin:8px 0 0;color:var(--gb-muted);font-size:.82rem}.guestbook-status.error{color:#ff7474}
-.guestbook-toast{position:fixed;z-index:9999;right:24px;bottom:24px;background:#fff;color:#222;padding:13px 17px;border-radius:8px;box-shadow:0 12px 35px rgba(0,0,0,.3);opacity:0;transform:translateY(20px);pointer-events:none;transition:.2s}.guestbook-toast.show{opacity:1;transform:translateY(0)}.guestbook-toast.error{color:#a50000}.hidden{display:none!important}
-@media(max-width:600px){.guestbook-shell{padding:45px 16px 70px}.guestbook-login{align-items:stretch;flex-direction:column}.guestbook-login-button{width:100%}.guestbook-composer{padding:15px}.guestbook-message{margin-left:54px}.guestbook-toast{right:16px;bottom:16px}}
+:root {
+    --gb-bg: #171717;
+    --gb-card: #242424;
+    --gb-border: rgba(255, 255, 255, 0.08);
+    --gb-text: #f4f4f4;
+    --gb-muted: #929292;
+    --gb-accent: #65c466;
+}
+
+/* ================================
+   GUESTBOOK PAGE
+================================ */
+
+.guestbook-page {
+    width: 100%;
+    min-height: calc(100vh - 150px);
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.guestbook-shell {
+    width: min(700px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 70px 0 90px;
+    box-sizing: border-box;
+}
+
+/* ================================
+   HERO
+================================ */
+
+.guestbook-hero {
+    margin-bottom: 36px;
+}
+
+.guestbook-hero h1 {
+    margin: 0 0 16px;
+    font-size: clamp(2rem, 6vw, 3rem);
+    line-height: 1.1;
+    color: var(--gb-text);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.guestbook-hero p {
+    margin: 0;
+    color: var(--gb-muted);
+    line-height: 1.7;
+    font-size: 1rem;
+    max-width: 650px;
+}
+
+/* ================================
+   COMPOSER
+================================ */
+
+.guestbook-composer {
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--gb-card);
+    border: 1px solid var(--gb-border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 32px;
+}
+
+.guestbook-user-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.guestbook-avatar {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border-radius: 6px;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    background: #5b35bd;
+    color: #fff;
+    font-weight: 600;
+}
+
+.guestbook-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.guestbook-user-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.guestbook-user-label {
+    color: var(--gb-muted);
+    font-size: 0.88rem;
+    line-height: 1.4;
+}
+
+.guestbook-user-label strong {
+    color: var(--gb-text);
+    font-weight: 600;
+}
+
+.guestbook-email {
+    color: #777;
+    font-size: 0.74rem;
+    margin-top: 2px;
+}
+
+.guestbook-signout {
+    border: 0;
+    background: transparent;
+    color: var(--gb-muted);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.82rem;
+    padding: 5px;
+}
+
+.guestbook-signout:hover {
+    color: #fff;
+}
+
+/* ================================
+   MESSAGE INPUT
+================================ */
+
+.guestbook-input-wrap {
+    width: 100%;
+    min-height: 56px;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: flex-end;
+    gap: 7px;
+
+    background: #191919;
+    border-radius: 7px;
+    padding: 7px 7px 7px 13px;
+}
+
+.guestbook-input {
+    flex: 1;
+    min-width: 0;
+    min-height: 42px;
+    max-height: 180px;
+
+    resize: vertical;
+
+    border: 0;
+    outline: 0;
+    background: transparent;
+
+    color: var(--gb-text);
+    font: inherit;
+    line-height: 1.5;
+
+    box-sizing: border-box;
+}
+
+.guestbook-input::placeholder {
+    color: #777;
+}
+
+.guestbook-send {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+
+    border: 0;
+    border-radius: 6px;
+
+    background: transparent;
+    color: #888;
+
+    cursor: pointer;
+    font-size: 17px;
+
+    display: grid;
+    place-items: center;
+
+    transition:
+        color 0.15s ease,
+        background 0.15s ease,
+        transform 0.15s ease;
+}
+
+.guestbook-send:hover:not(:disabled) {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.guestbook-send:active:not(:disabled) {
+    transform: scale(0.94);
+}
+
+.guestbook-send:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* ================================
+   LOGIN
+================================ */
+
+.guestbook-login {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    color: var(--gb-muted);
+    font-size: 0.92rem;
+}
+
+.guestbook-login-button {
+    border: 0;
+    border-radius: 7px;
+
+    background: var(--gb-accent);
+    color: #101010;
+
+    cursor: pointer;
+    font: inherit;
+    font-weight: 600;
+
+    padding: 11px 16px;
+    white-space: nowrap;
+
+    transition:
+        filter 0.15s ease,
+        transform 0.15s ease;
+}
+
+.guestbook-login-button:hover {
+    filter: brightness(1.08);
+}
+
+.guestbook-login-button:active {
+    transform: scale(0.98);
+}
+
+/* ================================
+   GUESTBOOK ENTRIES
+================================ */
+
+.guestbook-entry {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 18px 0 21px;
+
+    border-bottom: 1px solid var(--gb-border);
+}
+
+.guestbook-entry:first-child {
+    padding-top: 4px;
+}
+
+.guestbook-entry-top {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.guestbook-identity {
+    flex: 1;
+    min-width: 0;
+}
+
+.guestbook-name-line {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.guestbook-name {
+    color: var(--gb-text);
+    font-weight: 600;
+}
+
+.guestbook-signed {
+    color: #777;
+    font-size: 0.9rem;
+}
+
+.guestbook-time {
+    display: block;
+    color: #777;
+    font-size: 0.78rem;
+    margin-top: 3px;
+}
+
+.guestbook-message {
+    margin: 10px 0 0 54px;
+
+    color: var(--gb-text);
+    line-height: 1.7;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* ================================
+   STATES
+================================ */
+
+.guestbook-empty,
+.guestbook-loading {
+    text-align: center;
+    color: var(--gb-muted);
+    padding: 40px 0;
+}
+
+.guestbook-error {
+    color: #ff7474;
+}
+
+.guestbook-status {
+    min-height: 18px;
+    margin: 8px 0 0;
+
+    color: var(--gb-muted);
+    font-size: 0.82rem;
+}
+
+.guestbook-status.error {
+    color: #ff7474;
+}
+
+/* ================================
+   TOAST
+================================ */
+
+.guestbook-toast {
+    position: fixed;
+    z-index: 9999;
+
+    right: 24px;
+    bottom: 24px;
+
+    max-width: calc(100vw - 48px);
+
+    background: #fff;
+    color: #222;
+
+    padding: 13px 17px;
+    border-radius: 8px;
+
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+
+    opacity: 0;
+    transform: translateY(20px);
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.guestbook-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.guestbook-toast.error {
+    color: #a50000;
+}
+
+/* ================================
+   UTILITY
+================================ */
+
+.hidden {
+    display: none !important;
+}
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 600px) {
+
+    .guestbook-page {
+        min-height: auto;
+    }
+
+    .guestbook-shell {
+        width: calc(100% - 28px);
+        padding: 42px 0 70px;
+    }
+
+    .guestbook-hero {
+        margin-bottom: 28px;
+    }
+
+    .guestbook-hero h1 {
+        font-size: 2.25rem;
+        margin-bottom: 13px;
+    }
+
+    .guestbook-hero p {
+        font-size: 0.94rem;
+        line-height: 1.65;
+    }
+
+    .guestbook-composer {
+        padding: 15px;
+        margin-bottom: 26px;
+    }
+
+    .guestbook-user-row {
+        gap: 10px;
+    }
+
+    .guestbook-avatar {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+    }
+
+    .guestbook-input-wrap {
+        padding: 6px 6px 6px 11px;
+    }
+
+    .guestbook-input {
+        min-height: 42px;
+        font-size: 0.95rem;
+    }
+
+    .guestbook-message {
+        margin-left: 52px;
+        font-size: 0.94rem;
+    }
+
+    .guestbook-login {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .guestbook-login-button {
+        width: 100%;
+    }
+
+    .guestbook-toast {
+        right: 14px;
+        bottom: 14px;
+        max-width: calc(100vw - 28px);
+    }
+}
+
+/* ================================
+   VERY SMALL PHONES
+================================ */
+
+@media (max-width: 380px) {
+
+    .guestbook-shell {
+        width: calc(100% - 22px);
+        padding-top: 34px;
+    }
+
+    .guestbook-hero h1 {
+        font-size: 2rem;
+    }
+
+    .guestbook-composer {
+        padding: 13px;
+    }
+
+    .guestbook-message {
+        margin-left: 0;
+        margin-top: 12px;
+    }
+
+    .guestbook-user-row {
+        flex-wrap: wrap;
+    }
+
+    .guestbook-signout {
+        margin-left: auto;
+    }
+}
