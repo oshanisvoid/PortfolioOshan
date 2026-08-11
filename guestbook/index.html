@@ -1,63 +1,502 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Guestbook | Oshan.Codes</title>
-<meta name="description" content="Leave a message in Oshan Paudel's developer portfolio guestbook.">
-<link rel="canonical" href="https://oshanpaudel.com.np/guestbook">
-<link rel="stylesheet" href="/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link rel="icon" href="/notzercup.png" type="image/png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Guestbook | Oshan.Codes</title>
+
+    <meta
+        name="description"
+        content="Leave a message in Oshan Paudel's developer portfolio guestbook."
+    >
+
+    <link
+        rel="canonical"
+        href="https://oshanpaudel.com.np/guestbook"
+    >
+
+    <link rel="stylesheet" href="/style.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    >
+
+    <link rel="icon" href="/notzercup.png" type="image/png">
+
+    <!-- Guestbook-specific layout fix -->
+    <style>
+        /* =====================================================
+           PAGE LAYOUT
+           ===================================================== */
+
+        html,
+        body {
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Fixed navbar needs space below it */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        /* Main content fills the available screen */
+        .guestbook-page {
+            flex: 1 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+
+            /*
+             * Navbar is approximately 70px high.
+             * Extra space prevents the heading from touching it.
+             */
+            padding-top: 105px;
+
+            overflow: visible;
+        }
+
+        /* Actual guestbook content */
+        .guestbook-shell {
+            width: min(700px, calc(100% - 32px));
+            margin: 0 auto;
+
+            padding: 35px 0 90px;
+
+            box-sizing: border-box;
+        }
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+
+        .guestbook-hero {
+            width: 100%;
+            margin: 0 0 32px;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .guestbook-hero h1 {
+            margin: 0 0 14px;
+
+            color: var(--gb-text, #f0f0f0);
+
+            font-size: clamp(2rem, 6vw, 2.8rem);
+            line-height: 1.15;
+            font-weight: 700;
+
+            letter-spacing: -0.02em;
+        }
+
+        .guestbook-hero p {
+            margin: 0;
+
+            max-width: 650px;
+
+            color: var(--gb-muted, #999);
+
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           COMPOSER
+           ===================================================== */
+
+        .guestbook-composer {
+            width: 100%;
+            box-sizing: border-box;
+
+            margin: 0 0 30px;
+            padding: 18px;
+
+            background: #252525;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 9px;
+        }
+
+        /* =====================================================
+           MESSAGE LIST
+           ===================================================== */
+
+        .guestbook-list {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+
+            box-sizing: border-box;
+        }
+
+        .guestbook-entry {
+            width: 100%;
+            box-sizing: border-box;
+
+            padding: 18px 0 21px;
+
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .guestbook-entry:first-child {
+            padding-top: 4px;
+        }
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        .footer {
+            flex-shrink: 0;
+            width: 100%;
+            margin-top: auto;
+            box-sizing: border-box;
+        }
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media (max-width: 768px) {
+
+            .guestbook-page {
+                padding-top: 95px;
+            }
+
+            .guestbook-shell {
+                width: calc(100% - 28px);
+                padding: 25px 0 70px;
+            }
+
+            .guestbook-hero {
+                margin-bottom: 28px;
+            }
+
+            .guestbook-hero h1 {
+                font-size: 2.2rem;
+                margin-bottom: 13px;
+            }
+
+            .guestbook-hero p {
+                font-size: .94rem;
+                line-height: 1.65;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .guestbook-page {
+                padding-top: 92px;
+            }
+
+            .guestbook-shell {
+                width: calc(100% - 24px);
+                padding-top: 20px;
+                padding-bottom: 60px;
+            }
+
+            .guestbook-hero h1 {
+                font-size: 2rem;
+            }
+
+            .guestbook-hero p {
+                font-size: .9rem;
+            }
+
+            .guestbook-composer {
+                padding: 14px;
+            }
+        }
+
+        @media (max-width: 380px) {
+
+            .guestbook-page {
+                padding-top: 88px;
+            }
+
+            .guestbook-shell {
+                width: calc(100% - 20px);
+            }
+
+            .guestbook-hero h1 {
+                font-size: 1.85rem;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<header class="navbar"><div class="container">
-<a class="logo" href="/">Oshan.Codes</a>
-<button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
-<nav class="nav-links-container" aria-label="Primary navigation"><ul class="nav-links">
-<li><a href="/about">About</a></li><li><a href="/projects">Projects</a></li><li><a href="/contact">Contact</a></li><li><a href="/guestbook" class="active-nav">Guestbook</a></li>
-</ul></nav>
-</div></header>
 
-<main class="guestbook-page"><section class="guestbook-shell">
-<div class="guestbook-hero">
-<h1>Guestbook</h1>
-<p>Leave a comment below. It could be anything — appreciation, information, wisdom, anything good or bad about me, or even humor.</p>
-</div>
+    <!-- =====================================================
+         NAVBAR
+         ===================================================== -->
 
-<section class="guestbook-composer">
-<div id="guest-signed-out">
-<div class="guestbook-login"><span>Sign in with Google to leave a message.</span>
-<button class="guestbook-login-button" id="google-login" type="button">Continue with Google</button></div>
-<p id="auth-status" class="guestbook-status" role="status"></p>
-</div>
+    <header class="navbar">
+        <div class="container">
 
-<div id="guest-signed-in" class="hidden">
-<div class="guestbook-user-row">
-<div id="guest-avatar" class="guestbook-avatar"></div>
-<div class="guestbook-user-info">
-<div class="guestbook-user-label">Signed in as <strong id="guest-user-name"></strong></div>
-<div id="guest-user-email" class="guestbook-email"></div>
-</div>
-<button id="google-logout" class="guestbook-signout" type="button">Sign out</button>
-</div>
-<form id="guestbook-form">
-<div class="guestbook-input-wrap">
-<textarea id="guest-message" class="guestbook-input" rows="2" minlength="2" maxlength="500" required placeholder="Leave a message or some kudos!"></textarea>
-<button id="guestbook-submit" class="guestbook-send" type="submit" aria-label="Post message"><i class="fas fa-paper-plane"></i></button>
-</div>
-<p id="guestbook-status" class="guestbook-status" role="status"></p>
-</form>
-</div>
-</section>
+            <a class="logo" href="/">
+                Oshan.Codes
+            </a>
 
-<section id="guestbook-list" class="guestbook-list" aria-live="polite">
-<p class="guestbook-loading">Loading guestbook messages...</p>
-</section>
-</section></main>
+            <button
+                class="hamburger"
+                aria-label="Toggle navigation menu"
+                aria-expanded="false"
+                type="button"
+            >
+                <i class="fas fa-bars"></i>
+            </button>
 
-<div id="guestbook-toast" class="guestbook-toast" role="status"></div>
-<footer class="footer"><div class="container"><p>&copy; 2026 Oshan Paudel. All rights reserved.</p></div></footer>
-<script type="module" src="/guestbook-auth.js"></script>
-<script src="/script.js" defer></script>
-</body></html>
+            <nav
+                class="nav-links-container"
+                aria-label="Primary navigation"
+            >
+                <ul class="nav-links">
+
+                    <li>
+                        <a href="/about">
+                            About
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/projects">
+                            Projects
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/contact">
+                            Contact
+                        </a>
+                    </li>
+
+                    <li>
+                        <a
+                            href="/guestbook"
+                            class="active-nav"
+                        >
+                            Guestbook
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+
+
+    <!-- =====================================================
+         MAIN GUESTBOOK
+         ===================================================== -->
+
+    <main class="guestbook-page">
+
+        <section class="guestbook-shell">
+
+            <!-- Header -->
+
+            <div class="guestbook-hero">
+
+                <h1>
+                    Guestbook
+                </h1>
+
+                <p>
+                    Leave a comment below. It could be anything —
+                    appreciation, information, wisdom, anything good
+                    or bad about me, or even humor.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 COMPOSER
+                 ================================================= -->
+
+            <section class="guestbook-composer">
+
+                <!-- SIGNED OUT -->
+
+                <div id="guest-signed-out">
+
+                    <div class="guestbook-login">
+
+                        <span>
+                            Sign in with Google to leave a message.
+                        </span>
+
+                        <button
+                            class="guestbook-login-button"
+                            id="google-login"
+                            type="button"
+                        >
+                            Continue with Google
+                        </button>
+
+                    </div>
+
+                    <p
+                        id="auth-status"
+                        class="guestbook-status"
+                        role="status"
+                    ></p>
+
+                </div>
+
+
+                <!-- SIGNED IN -->
+
+                <div
+                    id="guest-signed-in"
+                    class="hidden"
+                >
+
+                    <div class="guestbook-user-row">
+
+                        <div
+                            id="guest-avatar"
+                            class="guestbook-avatar"
+                        ></div>
+
+                        <div class="guestbook-user-info">
+
+                            <div class="guestbook-user-label">
+                                Signed in as
+                                <strong id="guest-user-name"></strong>
+                            </div>
+
+                            <div
+                                id="guest-user-email"
+                                class="guestbook-email"
+                            ></div>
+
+                        </div>
+
+                        <button
+                            id="google-logout"
+                            class="guestbook-signout"
+                            type="button"
+                        >
+                            Sign out
+                        </button>
+
+                    </div>
+
+
+                    <!-- MESSAGE FORM -->
+
+                    <form id="guestbook-form">
+
+                        <div class="guestbook-input-wrap">
+
+                            <textarea
+                                id="guest-message"
+                                class="guestbook-input"
+                                rows="2"
+                                minlength="2"
+                                maxlength="500"
+                                required
+                                placeholder="Leave a message or some kudos!"
+                            ></textarea>
+
+                            <button
+                                id="guestbook-submit"
+                                class="guestbook-send"
+                                type="submit"
+                                aria-label="Post message"
+                            >
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+
+                        </div>
+
+                        <p
+                            id="guestbook-status"
+                            class="guestbook-status"
+                            role="status"
+                        ></p>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 GUESTBOOK MESSAGES
+                 ================================================= -->
+
+            <section
+                id="guestbook-list"
+                class="guestbook-list"
+                aria-live="polite"
+            >
+
+                <p class="guestbook-loading">
+                    Loading guestbook messages...
+                </p>
+
+            </section>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         TOAST
+         ===================================================== -->
+
+    <div
+        id="guestbook-toast"
+        class="guestbook-toast"
+        role="status"
+    ></div>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <p>
+                &copy; 2026 Oshan Paudel. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         SCRIPTS
+         ===================================================== -->
+
+    <script
+        type="module"
+        src="/guestbook-auth.js"
+    ></script>
+
+    <script
+        src="/script.js"
+        defer
+    ></script>
+
+</body>
+</html>

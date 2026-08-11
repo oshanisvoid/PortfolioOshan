@@ -1108,3 +1108,83 @@ main {
 .footer {
     flex-shrink: 0;
 }
+/* =========================================================
+   FINAL GUESTBOOK POSITION FIX
+   ========================================================= */
+
+/* Fixed navbar compensation */
+main.container {
+    padding-top: 110px !important;
+}
+
+/* Guestbook itself */
+.guestbook-page {
+    width: 100%;
+    min-height: auto !important;
+    overflow: visible !important;
+    box-sizing: border-box;
+}
+
+.guestbook-shell {
+    width: min(700px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 35px 0 100px !important;
+    box-sizing: border-box;
+}
+
+/* Make sure the heading is never hidden */
+.guestbook-hero {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+.guestbook-hero h1 {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin: 0 0 16px !important;
+}
+
+/* Prevent any parent from clipping the page */
+main,
+main.container,
+.guestbook-page,
+.guestbook-shell {
+    overflow-x: visible;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    main.container {
+        padding-top: 105px !important;
+    }
+
+    .guestbook-shell {
+        width: calc(100% - 28px);
+        padding: 25px 0 80px !important;
+    }
+}
+
+@media (max-width: 480px) {
+
+    main.container {
+        padding-top: 100px !important;
+    }
+
+    .guestbook-shell {
+        width: calc(100% - 24px);
+        padding-top: 20px !important;
+        padding-bottom: 70px !important;
+    }
+
+    .guestbook-hero h1 {
+        font-size: 2rem !important;
+    }
+}
