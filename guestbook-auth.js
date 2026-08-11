@@ -1,12 +1,34 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
-  from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp }
-  from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  orderBy,
+  limit,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
 import { firebaseConfig } from "./firebase-config.js";
 
-const $ = id => document.getElementById(id);
-const configured = !Object.values(firebaseConfig).some(v => String(v).startsWith("YOUR_"));
+const $ = (id) => document.getElementById(id);
+
+const configured =
+  firebaseConfig &&
+  firebaseConfig.apiKey &&
+  firebaseConfig.authDomain &&
+  firebaseConfig.projectId &&
+  firebaseConfig.appId;
 
 const signedOut = $("guest-signed-out");
 const signedIn = $("guest-signed-in");
@@ -17,105 +39,178 @@ const form = $("guestbook-form");
 const status = $("guestbook-status");
 const list = $("guestbook-list");
 
-let auth, db, currentUser = null;
+let auth = null;
+let db = null;
+let currentUser = null;
 
 function render(messages) {
   list.innerHTML = "";
+
   if (!messages.length) {
-    list.innerHTML = '<p class="empty-state">No messages yet. Be the first to sign the guestbook.</p>';
+    list.innerHTML = `
+      <p class="empty-state">
+        No messages yet. Be the first to sign the guestbook.
+      </p>
+    `;
     return;
   }
-  messages.forEach(item => {
+
+  messages.forEach((item) => {
     const card = document.createElement("article");
     card.className = "guestbook-entry";
 
     const top = document.createElement("div");
-    top.style.cssText = "display:flex;align-items:center;gap:12px";
+
+    top.style.cssText =
+      "display:flex;align-items:center;gap:12px;margin-bottom:12px;";
 
     if (item.photoURL) {
       const img = document.createElement("img");
+
       img.src = item.photoURL;
       img.alt = "";
       img.referrerPolicy = "no-referrer";
-      img.style.cssText = "width:36px;height:36px;border-radius:50%;object-fit:cover";
+
+      img.style.cssText =
+        "width:36px;height:36px;border-radius:50%;object-fit:cover;";
+
       top.appendChild(img);
     }
 
     const identity = document.createElement("div");
+
     const name = document.createElement("h3");
     name.textContent = item.displayName || "Anonymous";
+
     const time = document.createElement("time");
+
     time.dateTime = item.createdAt || "";
+
     time.textContent = item.createdAt
-      ? new Date(item.createdAt).toLocaleString(undefined, {year:"numeric",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})
+      ? new Date(item.createdAt).toLocaleString(undefined, {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit"
+        })
       : "Just now";
+
     identity.append(name, time);
     top.appendChild(identity);
 
     const message = document.createElement("p");
     message.textContent = item.message;
+
     card.append(top, message);
+
     list.appendChild(card);
   });
 }
 
 async function loadMessages() {
   if (!db) return;
+
   try {
-    const q = query(collection(db, "guestbook"), orderBy("createdAt", "desc"), limit(100));
+    const q = query(
+      collection(db, "guestbook"),
+      orderBy("createdAt", "desc"),
+      limit(100)
+    );
+
     const snap = await getDocs(q);
-    render(snap.docs.map(d => {
-      const x = d.data();
+
+    const messages = snap.docs.map((doc) => {
+      const data = doc.data();
+
       return {
-        displayName: x.displayName,
-        photoURL: x.photoURL,
-        message: x.message,
-        createdAt: x.createdAt?.toDate?.()?.toISOString() || ""
+        displayName: data.displayName || "Anonymous",
+        photoURL: data.photoURL || "",
+        message: data.message || "",
+        createdAt:
+          data.createdAt?.toDate?.()?.toISOString() || ""
       };
-    }));
-  } catch (e) {
-    console.error(e);
-    list.innerHTML = '<p class="empty-state">Could not load messages. Check your Firestore rules/setup.</p>';
+    });
+
+    render(messages);
+  } catch (error) {
+    console.error("Firestore error:", error);
+
+    list.innerHTML = `
+      <p class="empty-state">
+        Could not load guestbook messages.
+      </p>
+    `;
   }
 }
 
 function updateUser(user) {
   currentUser = user;
+
   signedOut.classList.toggle("hidden", !!user);
   signedIn.classList.toggle("hidden", !user);
-  if (user) {
-    $("guest-user-name").textContent = user.displayName || "Google user";
-    $("guest-user-email").textContent = user.email || "";
-    const avatar = $("guest-avatar");
-    if (user.photoURL) {
-      avatar.src = user.photoURL;
-      avatar.alt = `${user.displayName || "User"} profile photo`;
-      avatar.classList.remove("hidden");
-    } else {
-      avatar.classList.add("hidden");
-    }
+
+  if (!user) {
+    return;
+  }
+
+  const name = $("guest-user-name");
+  const email = $("guest-user-email");
+  const avatar = $("guest-avatar");
+
+  name.textContent = user.displayName || "Google User";
+  email.textContent = user.email || "";
+
+  if (user.photoURL) {
+    avatar.src = user.photoURL;
+    avatar.alt = `${user.displayName || "User"} profile photo`;
+    avatar.classList.remove("hidden");
+  } else {
+    avatar.classList.add("hidden");
   }
 }
 
 async function login() {
-  if (!configured) {
+  if (!auth) {
     authStatus.className = "form-status error";
-    authStatus.textContent = "Add your Firebase Web App config to firebase-config.js first.";
+    authStatus.textContent =
+      "Firebase Authentication is not configured.";
     return;
   }
+
   loginButton.disabled = true;
+
+  authStatus.className = "form-status";
   authStatus.textContent = "Opening Google login...";
+
   try {
     const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({prompt:"select_account"});
+
+    provider.setCustomParameters({
+      prompt: "select_account"
+    });
+
     await signInWithPopup(auth, provider);
-    authStatus.textContent = "";
-  } catch (e) {
-    console.error(e);
+
+    authStatus.className = "form-status success";
+    authStatus.textContent = "Signed in successfully.";
+  } catch (error) {
+    console.error("Google login error:", error);
+
     authStatus.className = "form-status error";
-    authStatus.textContent = e.code === "auth/popup-closed-by-user"
-      ? "Google login was cancelled."
-      : "Google login failed. Check Firebase Authentication.";
+
+    if (error.code === "auth/popup-closed-by-user") {
+      authStatus.textContent = "Google login was cancelled.";
+    } else if (error.code === "auth/popup-blocked") {
+      authStatus.textContent =
+        "Your browser blocked the Google login popup. Please allow popups for this site.";
+    } else if (error.code === "auth/unauthorized-domain") {
+      authStatus.textContent =
+        "This website domain is not authorized in Firebase.";
+    } else {
+      authStatus.textContent =
+        `Google login failed: ${error.code || "Unknown error"}`;
+    }
   } finally {
     loginButton.disabled = false;
   }
@@ -123,21 +218,28 @@ async function login() {
 
 async function submitMessage(event) {
   event.preventDefault();
+
   if (!currentUser) {
     status.className = "form-status error";
-    status.textContent = "Please sign in with Google first.";
+    status.textContent =
+      "Please sign in with Google first.";
     return;
   }
 
-  const message = $("guest-message").value.trim();
+  const messageInput = $("guest-message");
+  const message = messageInput.value.trim();
+
   if (message.length < 2 || message.length > 500) {
     status.className = "form-status error";
-    status.textContent = "Message must be between 2 and 500 characters.";
+    status.textContent =
+      "Message must be between 2 and 500 characters.";
     return;
   }
 
   const button = $("guestbook-submit");
+
   button.disabled = true;
+
   status.className = "form-status";
   status.textContent = "Publishing...";
 
@@ -146,42 +248,85 @@ async function submitMessage(event) {
       uid: currentUser.uid,
       displayName: currentUser.displayName || "Anonymous",
       photoURL: currentUser.photoURL || "",
-      message,
+      message: message,
       createdAt: serverTimestamp()
     });
+
     form.reset();
+
     status.className = "form-status success";
-    status.textContent = "Your message is now visible.";
+    status.textContent =
+      "Your message is now visible.";
+
     await loadMessages();
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error("Guestbook publish error:", error);
+
     status.className = "form-status error";
-    status.textContent = "Could not publish. Check Firestore rules.";
+    status.textContent =
+      "Could not publish your message. Check Firestore permissions.";
   } finally {
     button.disabled = false;
   }
 }
 
+
+/* --------------------------------
+   FIREBASE INITIALIZATION
+-------------------------------- */
+
 if (!configured) {
   authStatus.className = "form-status error";
-  authStatus.textContent = "Google login needs Firebase configuration.";
-  list.innerHTML = '<p class="empty-state">Configure Firebase to enable the shared guestbook.</p>';
+
+  authStatus.textContent =
+    "Firebase configuration is missing.";
+
+  list.innerHTML = `
+    <p class="empty-state">
+      Firebase is not configured.
+    </p>
+  `;
 } else {
   try {
     const app = initializeApp(firebaseConfig);
+
     auth = getAuth(app);
     db = getFirestore(app);
-    onAuthStateChanged(auth, async user => {
+
+    onAuthStateChanged(auth, async (user) => {
       updateUser(user);
       await loadMessages();
     });
-  } catch (e) {
-    console.error(e);
+
+  } catch (error) {
+    console.error("Firebase initialization error:", error);
+
     authStatus.className = "form-status error";
-    authStatus.textContent = "Firebase could not be initialized.";
+
+    authStatus.textContent =
+      "Firebase could not be initialized.";
+
+    list.innerHTML = `
+      <p class="empty-state">
+        Firebase initialization failed.
+      </p>
+    `;
   }
 }
 
+
+/* --------------------------------
+   EVENTS
+-------------------------------- */
+
 loginButton?.addEventListener("click", login);
-logoutButton?.addEventListener("click", () => signOut(auth));
+
+logoutButton?.addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.error("Logout error:", error);
+  }
+});
+
 form?.addEventListener("submit", submitMessage);
