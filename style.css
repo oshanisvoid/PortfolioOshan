@@ -511,76 +511,81 @@ main.container { padding-top: 80px; }
   white-space: nowrap;
   border: 0;
 }
+/* =========================================================
+   GUESTBOOK
+   ========================================================= */
+
 :root {
-    --gb-bg: #171717;
-    --gb-card: #242424;
-    --gb-border: rgba(255, 255, 255, 0.08);
-    --gb-text: #f4f4f4;
-    --gb-muted: #929292;
-    --gb-accent: #65c466;
+    --gb-bg: #1a1a1a;
+    --gb-card: #252525;
+    --gb-card-hover: #292929;
+    --gb-border: #3a3a3a;
+    --gb-text: #f0f0f0;
+    --gb-muted: #999;
+    --gb-accent: #5cb85c;
 }
 
-/* ================================
-   GUESTBOOK PAGE
-================================ */
-
+/* Page wrapper */
 .guestbook-page {
     width: 100%;
-    min-height: calc(100vh - 150px);
+    min-height: calc(100vh - 80px);
     box-sizing: border-box;
     overflow-x: hidden;
 }
 
+/* Main content */
 .guestbook-shell {
     width: min(700px, calc(100% - 32px));
     margin: 0 auto;
-    padding: 70px 0 90px;
+    padding: 55px 0 90px;
     box-sizing: border-box;
 }
 
-/* ================================
-   HERO
-================================ */
+/* =========================================================
+   HEADER
+   ========================================================= */
 
 .guestbook-hero {
-    margin-bottom: 36px;
+    margin-bottom: 32px;
 }
 
 .guestbook-hero h1 {
-    margin: 0 0 16px;
-    font-size: clamp(2rem, 6vw, 3rem);
-    line-height: 1.1;
+    margin: 0 0 14px;
     color: var(--gb-text);
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    line-height: 1.15;
     font-weight: 700;
     letter-spacing: -0.02em;
 }
 
 .guestbook-hero p {
     margin: 0;
-    color: var(--gb-muted);
-    line-height: 1.7;
-    font-size: 1rem;
     max-width: 650px;
+    color: var(--gb-muted);
+    font-size: 1rem;
+    line-height: 1.7;
 }
 
-/* ================================
+/* =========================================================
    COMPOSER
-================================ */
+   ========================================================= */
 
 .guestbook-composer {
     width: 100%;
+    margin-bottom: 30px;
+    padding: 18px;
     box-sizing: border-box;
+
     background: var(--gb-card);
     border: 1px solid var(--gb-border);
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 32px;
+    border-radius: 9px;
 }
 
 .guestbook-user-row {
     display: flex;
     align-items: center;
     gap: 12px;
+    width: 100%;
     margin-bottom: 14px;
 }
 
@@ -588,12 +593,17 @@ main.container { padding-top: 80px; }
     width: 42px;
     height: 42px;
     min-width: 42px;
-    border-radius: 6px;
-    overflow: hidden;
+
     display: grid;
     place-items: center;
-    background: #5b35bd;
-    color: #fff;
+
+    overflow: hidden;
+    border-radius: 6px;
+
+    background: #673ab7;
+    color: white;
+
+    font-size: 1.1rem;
     font-weight: 600;
 }
 
@@ -620,60 +630,66 @@ main.container { padding-top: 80px; }
 }
 
 .guestbook-email {
+    margin-top: 2px;
     color: #777;
     font-size: 0.74rem;
-    margin-top: 2px;
 }
 
 .guestbook-signout {
+    padding: 5px;
+
     border: 0;
     background: transparent;
+
     color: var(--gb-muted);
-    cursor: pointer;
     font: inherit;
     font-size: 0.82rem;
-    padding: 5px;
+
+    cursor: pointer;
 }
 
 .guestbook-signout:hover {
     color: #fff;
 }
 
-/* ================================
+/* =========================================================
    MESSAGE INPUT
-================================ */
+   ========================================================= */
 
 .guestbook-input-wrap {
     width: 100%;
-    min-height: 56px;
-    box-sizing: border-box;
+    min-height: 55px;
 
     display: flex;
     align-items: flex-end;
-    gap: 7px;
+    gap: 6px;
+
+    padding: 6px 6px 6px 12px;
+    box-sizing: border-box;
 
     background: #191919;
     border-radius: 7px;
-    padding: 7px 7px 7px 13px;
 }
 
 .guestbook-input {
     flex: 1;
+    width: 100%;
     min-width: 0;
     min-height: 42px;
     max-height: 180px;
 
+    padding: 5px 0;
+
     resize: vertical;
 
     border: 0;
-    outline: 0;
+    outline: none;
+
     background: transparent;
 
     color: var(--gb-text);
     font: inherit;
     line-height: 1.5;
-
-    box-sizing: border-box;
 }
 
 .guestbook-input::placeholder {
@@ -685,6 +701,9 @@ main.container { padding-top: 80px; }
     height: 42px;
     min-width: 42px;
 
+    display: grid;
+    place-items: center;
+
     border: 0;
     border-radius: 6px;
 
@@ -692,10 +711,8 @@ main.container { padding-top: 80px; }
     color: #888;
 
     cursor: pointer;
-    font-size: 17px;
 
-    display: grid;
-    place-items: center;
+    font-size: 17px;
 
     transition:
         color 0.15s ease,
@@ -704,8 +721,8 @@ main.container { padding-top: 80px; }
 }
 
 .guestbook-send:hover:not(:disabled) {
-    color: #fff;
     background: rgba(255, 255, 255, 0.06);
+    color: #fff;
 }
 
 .guestbook-send:active:not(:disabled) {
@@ -717,9 +734,9 @@ main.container { padding-top: 80px; }
     cursor: not-allowed;
 }
 
-/* ================================
+/* =========================================================
    LOGIN
-================================ */
+   ========================================================= */
 
 .guestbook-login {
     display: flex;
@@ -732,18 +749,18 @@ main.container { padding-top: 80px; }
 }
 
 .guestbook-login-button {
+    padding: 11px 16px;
+
     border: 0;
     border-radius: 7px;
 
     background: var(--gb-accent);
     color: #101010;
 
-    cursor: pointer;
     font: inherit;
     font-weight: 600;
 
-    padding: 11px 16px;
-    white-space: nowrap;
+    cursor: pointer;
 
     transition:
         filter 0.15s ease,
@@ -758,15 +775,23 @@ main.container { padding-top: 80px; }
     transform: scale(0.98);
 }
 
-/* ================================
-   GUESTBOOK ENTRIES
-================================ */
+/* =========================================================
+   MESSAGE LIST
+   ========================================================= */
+
+.guestbook-list {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+}
 
 .guestbook-entry {
     width: 100%;
-    box-sizing: border-box;
-
     padding: 18px 0 21px;
+
+    box-sizing: border-box;
 
     border-bottom: 1px solid var(--gb-border);
 }
@@ -777,8 +802,8 @@ main.container { padding-top: 80px; }
 
 .guestbook-entry-top {
     display: flex;
-    gap: 12px;
     align-items: flex-start;
+    gap: 12px;
 }
 
 .guestbook-identity {
@@ -800,14 +825,15 @@ main.container { padding-top: 80px; }
 
 .guestbook-signed {
     color: #777;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
 }
 
 .guestbook-time {
     display: block;
+    margin-top: 3px;
+
     color: #777;
     font-size: 0.78rem;
-    margin-top: 3px;
 }
 
 .guestbook-message {
@@ -821,15 +847,16 @@ main.container { padding-top: 80px; }
     word-break: break-word;
 }
 
-/* ================================
+/* =========================================================
    STATES
-================================ */
+   ========================================================= */
 
 .guestbook-empty,
 .guestbook-loading {
+    padding: 40px 0;
+
     text-align: center;
     color: var(--gb-muted);
-    padding: 40px 0;
 }
 
 .guestbook-error {
@@ -848,23 +875,23 @@ main.container { padding-top: 80px; }
     color: #ff7474;
 }
 
-/* ================================
+/* =========================================================
    TOAST
-================================ */
+   ========================================================= */
 
 .guestbook-toast {
     position: fixed;
-    z-index: 9999;
-
     right: 24px;
     bottom: 24px;
+    z-index: 9999;
 
     max-width: calc(100vw - 48px);
+
+    padding: 13px 17px;
 
     background: #fff;
     color: #222;
 
-    padding: 13px 17px;
     border-radius: 8px;
 
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
@@ -888,22 +915,24 @@ main.container { padding-top: 80px; }
     color: #a50000;
 }
 
-/* ================================
-   UTILITY
-================================ */
-
-.hidden {
-    display: none !important;
-}
-
-/* ================================
+/* =========================================================
    MOBILE
-================================ */
+   ========================================================= */
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+
+    /*
+       IMPORTANT:
+       Your navbar is fixed, so give the guestbook enough
+       space underneath it.
+    */
+
+    main.container {
+        padding-top: 76px;
+    }
 
     .guestbook-page {
-        min-height: auto;
+        min-height: calc(100vh - 76px);
     }
 
     .guestbook-shell {
@@ -916,7 +945,7 @@ main.container { padding-top: 80px; }
     }
 
     .guestbook-hero h1 {
-        font-size: 2.25rem;
+        font-size: 2.2rem;
         margin-bottom: 13px;
     }
 
@@ -941,7 +970,8 @@ main.container { padding-top: 80px; }
     }
 
     .guestbook-input-wrap {
-        padding: 6px 6px 6px 11px;
+        padding: 6px;
+        padding-left: 11px;
     }
 
     .guestbook-input {
@@ -970,28 +1000,65 @@ main.container { padding-top: 80px; }
     }
 }
 
-/* ================================
-   VERY SMALL PHONES
-================================ */
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
 
-@media (max-width: 380px) {
+@media (max-width: 480px) {
 
     .guestbook-shell {
-        width: calc(100% - 22px);
-        padding-top: 34px;
+        width: calc(100% - 24px);
+        padding-top: 35px;
+        padding-bottom: 60px;
     }
 
     .guestbook-hero h1 {
         font-size: 2rem;
     }
 
+    .guestbook-hero p {
+        font-size: 0.9rem;
+    }
+
     .guestbook-composer {
         padding: 13px;
+    }
+
+    .guestbook-user-row {
+        gap: 9px;
     }
 
     .guestbook-message {
         margin-left: 0;
         margin-top: 12px;
+    }
+
+    .guestbook-name-line {
+        gap: 5px;
+    }
+
+    .guestbook-signed {
+        font-size: 0.82rem;
+    }
+}
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    .guestbook-shell {
+        width: calc(100% - 20px);
+        padding-top: 30px;
+    }
+
+    .guestbook-hero h1 {
+        font-size: 1.85rem;
+    }
+
+    .guestbook-composer {
+        padding: 12px;
     }
 
     .guestbook-user-row {
@@ -1001,4 +1068,43 @@ main.container { padding-top: 80px; }
     .guestbook-signout {
         margin-left: auto;
     }
+}
+
+/* =========================================================
+   FOOTER FIX
+   ========================================================= */
+
+/*
+   Prevent the footer from appearing in the middle of
+   short guestbook pages.
+*/
+
+body {
+    min-height: 100vh;
+}
+
+footer,
+.footer {
+    position: relative;
+    width: 100%;
+    margin-top: auto;
+    box-sizing: border-box;
+}
+
+/*
+   If your site wrapper is the main page container,
+   make it a proper vertical layout.
+*/
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+.footer {
+    flex-shrink: 0;
 }
