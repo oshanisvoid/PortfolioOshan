@@ -1,0 +1,51 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/about"
+  to = "/about.html"
+  status = 200
+
+[[redirects]]
+  from = "/projects"
+  to = "/projects.html"
+  status = 200
+
+[[redirects]]
+  from = "/contact"
+  to = "/contact.html"
+  status = 200
+
+[[redirects]]
+  from = "/guestbook"
+  to = "/guestbook.html"
+  status = 200
+
+[[redirects]]
+  from = "/about/"
+  to = "/about.html"
+  status = 200
+
+[[redirects]]
+  from = "/projects/"
+  to = "/projects.html"
+  status = 200
+
+[[redirects]]
+  from = "/contact/"
+  to = "/contact.html"
+  status = 200
+
+[[redirects]]
+  from = "/guestbook/"
+  to = "/guestbook.html"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/not-found.html"
+  status = 404
