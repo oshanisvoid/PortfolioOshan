@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,10 +27,6 @@
     <link rel="icon" href="/notzercup.png" type="image/png">
 
     <style>
-        /* =====================================================
-           PAGE LAYOUT
-           ===================================================== */
-
         html,
         body {
             min-height: 100%;
@@ -54,7 +51,6 @@
             width: 100%;
             box-sizing: border-box;
             padding-top: 105px;
-            overflow: visible;
         }
 
         .guestbook-shell {
@@ -64,15 +60,9 @@
             box-sizing: border-box;
         }
 
-        /* =====================================================
-           HEADER
-           ===================================================== */
-
         .guestbook-hero {
             width: 100%;
             margin: 0 0 32px;
-            padding: 0;
-            box-sizing: border-box;
         }
 
         .guestbook-hero h1 {
@@ -81,7 +71,6 @@
             font-size: clamp(2rem, 6vw, 2.8rem);
             line-height: 1.15;
             font-weight: 700;
-            letter-spacing: -0.02em;
         }
 
         .guestbook-hero p {
@@ -92,23 +81,15 @@
             line-height: 1.7;
         }
 
-        /* =====================================================
-           COMPOSER
-           ===================================================== */
-
         .guestbook-composer {
             width: 100%;
-            box-sizing: border-box;
-            margin: 0 0 30px;
+            margin-bottom: 30px;
             padding: 18px;
+            box-sizing: border-box;
             background: #252525;
             border: 1px solid rgba(255,255,255,.08);
             border-radius: 9px;
         }
-
-        /* =====================================================
-           LOGIN BUTTONS
-           ===================================================== */
 
         .guestbook-login {
             display: flex;
@@ -131,20 +112,12 @@
             cursor: not-allowed;
         }
 
-        /* =====================================================
-           MESSAGE LIST
-           ===================================================== */
-
         .guestbook-list {
             width: 100%;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
         }
 
         .guestbook-entry {
             width: 100%;
-            box-sizing: border-box;
             padding: 18px 0 21px;
             border-bottom: 1px solid rgba(255,255,255,.08);
         }
@@ -153,22 +126,209 @@
             padding-top: 4px;
         }
 
-        /* =====================================================
-           FOOTER
-           ===================================================== */
+        .guestbook-entry-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .guestbook-identity {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .guestbook-name-line {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        .guestbook-name {
+            font-weight: 600;
+        }
+
+        .guestbook-signed {
+            color: #888;
+            font-size: .9rem;
+        }
+
+        .guestbook-time {
+            display: block;
+            margin-top: 3px;
+            color: #777;
+            font-size: .8rem;
+        }
+
+        .guestbook-message {
+            margin: 12px 0 0 54px;
+            color: #ddd;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .guestbook-avatar {
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            border-radius: 50%;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-weight: 600;
+        }
+
+        .guestbook-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ACTIONS */
+
+        .guestbook-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 12px 0 0 54px;
+        }
+
+        .guestbook-admin-button {
+            border: 1px solid rgba(255,255,255,.1);
+            background: transparent;
+            color: #aaa;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: .82rem;
+            transition: .2s ease;
+        }
+
+        .guestbook-admin-button:hover {
+            background: rgba(255,255,255,.06);
+            color: #fff;
+        }
+
+        .guestbook-heart {
+            color: #ff5b72;
+        }
+
+        .guestbook-heart.active {
+            background: rgba(255,91,114,.1);
+            color: #ff5b72;
+        }
+
+        .guestbook-reply-box {
+            display: none;
+            margin: 12px 0 0 54px;
+        }
+
+        .guestbook-reply-box.show {
+            display: block;
+        }
+
+        .guestbook-reply-box textarea {
+            width: 100%;
+            min-height: 75px;
+            box-sizing: border-box;
+            resize: vertical;
+            padding: 10px;
+            border-radius: 7px;
+            border: 1px solid rgba(255,255,255,.1);
+            background: #1d1d1d;
+            color: #fff;
+            outline: none;
+        }
+
+        .guestbook-reply-submit {
+            margin-top: 7px;
+            border: 0;
+            border-radius: 6px;
+            padding: 7px 12px;
+            cursor: pointer;
+        }
+
+        /* REPLIES */
+
+        .guestbook-replies {
+            margin: 14px 0 0 54px;
+            padding-left: 15px;
+            border-left: 2px solid rgba(255,255,255,.08);
+        }
+
+        .guestbook-reply {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .guestbook-reply:first-child {
+            margin-top: 0;
+        }
+
+        .guestbook-reply .guestbook-avatar {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            font-size: .8rem;
+        }
+
+        .guestbook-reply-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .guestbook-reply-name {
+            font-size: .88rem;
+            font-weight: 600;
+        }
+
+        .guestbook-reply-text {
+            margin-top: 3px;
+            color: #ccc;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .guestbook-reply-time {
+            margin-top: 3px;
+            color: #666;
+            font-size: .75rem;
+        }
+
+        .guestbook-admin-badge {
+            display: inline-block;
+            margin-left: 5px;
+            padding: 2px 5px;
+            border-radius: 4px;
+            background: rgba(255,255,255,.08);
+            color: #aaa;
+            font-size: .68rem;
+        }
+
+        .guestbook-status {
+            min-height: 18px;
+            margin: 10px 0 0;
+            color: #888;
+            font-size: .85rem;
+        }
+
+        .guestbook-status.error {
+            color: #ff6b6b;
+        }
 
         .footer {
             flex-shrink: 0;
             width: 100%;
             margin-top: auto;
-            box-sizing: border-box;
         }
 
-        /* =====================================================
-           MOBILE
-           ===================================================== */
-
         @media (max-width: 768px) {
+
             .guestbook-page {
                 padding-top: 95px;
             }
@@ -177,23 +337,10 @@
                 width: calc(100% - 28px);
                 padding: 25px 0 70px;
             }
-
-            .guestbook-hero {
-                margin-bottom: 28px;
-            }
-
-            .guestbook-hero h1 {
-                font-size: 2.2rem;
-                margin-bottom: 13px;
-            }
-
-            .guestbook-hero p {
-                font-size: .94rem;
-                line-height: 1.65;
-            }
         }
 
         @media (max-width: 480px) {
+
             .guestbook-page {
                 padding-top: 92px;
             }
@@ -201,15 +348,6 @@
             .guestbook-shell {
                 width: calc(100% - 24px);
                 padding-top: 20px;
-                padding-bottom: 60px;
-            }
-
-            .guestbook-hero h1 {
-                font-size: 2rem;
-            }
-
-            .guestbook-hero p {
-                font-size: .9rem;
             }
 
             .guestbook-composer {
@@ -223,990 +361,802 @@
             .guestbook-login-button {
                 width: 100%;
             }
-        }
 
-        @media (max-width: 380px) {
-            .guestbook-page {
-                padding-top: 88px;
-            }
-
-            .guestbook-shell {
-                width: calc(100% - 20px);
-            }
-
-            .guestbook-hero h1 {
-                font-size: 1.85rem;
+            .guestbook-message,
+            .guestbook-actions,
+            .guestbook-reply-box,
+            .guestbook-replies {
+                margin-left: 0;
             }
         }
     </style>
 </head>
 
+
 <body>
 
-    <!-- =====================================================
-         NAVBAR
-         ===================================================== -->
+<header class="navbar">
 
-    <header class="navbar">
-        <div class="container">
+    <div class="container">
 
-            <a class="logo" href="/">
-                Oshan.Codes
-            </a>
+        <a class="logo" href="/">
+            Oshan.Codes
+        </a>
 
-            <button
-                class="hamburger"
-                aria-label="Toggle navigation menu"
-                aria-expanded="false"
-                type="button"
-            >
-                <i class="fas fa-bars"></i>
-            </button>
+        <button
+            class="hamburger"
+            aria-label="Toggle navigation menu"
+            aria-expanded="false"
+            type="button"
+        >
+            <i class="fas fa-bars"></i>
+        </button>
 
-            <nav
-                class="nav-links-container"
-                aria-label="Primary navigation"
-            >
-                <ul class="nav-links">
+        <nav
+            class="nav-links-container"
+            aria-label="Primary navigation"
+        >
 
-                    <li>
-                        <a href="/about">
-                            About
-                        </a>
-                    </li>
+            <ul class="nav-links">
 
-                    <li>
-                        <a href="/projects">
-                            Projects
-                        </a>
-                    </li>
+                <li>
+                    <a href="/about">
+                        About
+                    </a>
+                </li>
 
-                    <li>
-                        <a href="/contact">
-                            Contact
-                        </a>
-                    </li>
+                <li>
+                    <a href="/projects">
+                        Projects
+                    </a>
+                </li>
 
-                    <li>
-                        <a
-                            href="/guestbook"
-                            class="active-nav"
-                        >
-                            Guestbook
-                        </a>
-                    </li>
+                <li>
+                    <a href="/contact">
+                        Contact
+                    </a>
+                </li>
 
-                </ul>
-            </nav>
+                <li>
+                    <a
+                        href="/guestbook"
+                        class="active-nav"
+                    >
+                        Guestbook
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<main class="guestbook-page">
+
+<section class="guestbook-shell">
+
+    <div class="guestbook-hero">
+
+        <h1>
+            Guestbook
+        </h1>
+
+        <p>
+            Leave a comment below. It could be anything —
+            appreciation, information, wisdom, anything good
+            or bad about me, or even humor.
+        </p>
+
+    </div>
+
+
+    <!-- LOGIN / COMPOSER -->
+
+    <section class="guestbook-composer">
+
+        <div id="guest-signed-out">
+
+            <div class="guestbook-login">
+
+                <span>
+                    Sign in to leave a message.
+                </span>
+
+                <div class="guestbook-login-buttons">
+
+                    <button
+                        class="guestbook-login-button"
+                        id="google-login"
+                        type="button"
+                    >
+                        <i class="fab fa-google"></i>
+                        Continue with Google
+                    </button>
+
+                    <button
+                        class="guestbook-login-button"
+                        id="github-login"
+                        type="button"
+                    >
+                        <i class="fab fa-github"></i>
+                        Continue with GitHub
+                    </button>
+
+                </div>
+
+            </div>
+
+            <p
+                id="auth-status"
+                class="guestbook-status"
+            ></p>
 
         </div>
-    </header>
 
 
-    <!-- =====================================================
-         MAIN GUESTBOOK
-         ===================================================== -->
+        <div
+            id="guest-signed-in"
+            class="hidden"
+        >
 
-    <main class="guestbook-page">
+            <div class="guestbook-user-row">
 
-        <section class="guestbook-shell">
+                <div
+                    id="guest-avatar"
+                    class="guestbook-avatar"
+                ></div>
 
-            <!-- HEADER -->
+                <div class="guestbook-user-info">
 
-            <div class="guestbook-hero">
+                    <div class="guestbook-user-label">
 
-                <h1>
-                    Guestbook
-                </h1>
+                        Signed in as
 
-                <p>
-                    Leave a comment below. It could be anything —
-                    appreciation, information, wisdom, anything good
-                    or bad about me, or even humor.
-                </p>
+                        <strong id="guest-user-name"></strong>
+
+                    </div>
+
+                    <div
+                        id="guest-user-email"
+                        class="guestbook-email"
+                    ></div>
+
+                </div>
+
+                <button
+                    id="google-logout"
+                    class="guestbook-signout"
+                    type="button"
+                >
+                    Sign out
+                </button>
 
             </div>
 
 
-            <!-- =================================================
-                 COMPOSER
-                 ================================================= -->
+            <form id="guestbook-form">
 
-            <section class="guestbook-composer">
+                <div class="guestbook-input-wrap">
 
-                <!-- SIGNED OUT -->
+                    <textarea
+                        id="guest-message"
+                        class="guestbook-input"
+                        rows="2"
+                        minlength="2"
+                        maxlength="500"
+                        required
+                        placeholder="Leave a message or some kudos!"
+                    ></textarea>
 
-                <div id="guest-signed-out">
-
-                    <div class="guestbook-login">
-
-                        <span>
-                            Sign in to leave a message.
-                        </span>
-
-                        <div class="guestbook-login-buttons">
-
-                            <button
-                                class="guestbook-login-button"
-                                id="google-login"
-                                type="button"
-                            >
-                                <i class="fab fa-google"></i>
-                                Continue with Google
-                            </button>
-
-                            <button
-                                class="guestbook-login-button"
-                                id="github-login"
-                                type="button"
-                            >
-                                <i class="fab fa-github"></i>
-                                Continue with GitHub
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                    <p
-                        id="auth-status"
-                        class="guestbook-status"
-                        role="status"
-                    ></p>
+                    <button
+                        id="guestbook-submit"
+                        class="guestbook-send"
+                        type="submit"
+                    >
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
 
                 </div>
 
+                <p
+                    id="guestbook-status"
+                    class="guestbook-status"
+                ></p>
 
-                <!-- SIGNED IN -->
-
-                <div
-                    id="guest-signed-in"
-                    class="hidden"
-                >
-
-                    <div class="guestbook-user-row">
-
-                        <div
-                            id="guest-avatar"
-                            class="guestbook-avatar"
-                        ></div>
-
-                        <div class="guestbook-user-info">
-
-                            <div class="guestbook-user-label">
-                                Signed in as
-                                <strong id="guest-user-name"></strong>
-                            </div>
-
-                            <div
-                                id="guest-user-email"
-                                class="guestbook-email"
-                            ></div>
-
-                        </div>
-
-                        <button
-                            id="google-logout"
-                            class="guestbook-signout"
-                            type="button"
-                        >
-                            Sign out
-                        </button>
-
-                    </div>
-
-
-                    <!-- MESSAGE FORM -->
-
-                    <form id="guestbook-form">
-
-                        <div class="guestbook-input-wrap">
-
-                            <textarea
-                                id="guest-message"
-                                class="guestbook-input"
-                                rows="2"
-                                minlength="2"
-                                maxlength="500"
-                                required
-                                placeholder="Leave a message or some kudos!"
-                            ></textarea>
-
-                            <button
-                                id="guestbook-submit"
-                                class="guestbook-send"
-                                type="submit"
-                                aria-label="Post message"
-                            >
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-
-                        </div>
-
-                        <p
-                            id="guestbook-status"
-                            class="guestbook-status"
-                            role="status"
-                        ></p>
-
-                    </form>
-
-                </div>
-
-            </section>
-
-
-            <!-- =================================================
-                 GUESTBOOK MESSAGES
-                 ================================================= -->
-
-            <section
-                id="guestbook-list"
-                class="guestbook-list"
-                aria-live="polite"
-            >
-
-                <p class="guestbook-loading">
-                    Loading guestbook messages...
-                </p>
-
-            </section>
-
-        </section>
-
-    </main>
-
-
-    <!-- =====================================================
-         TOAST
-         ===================================================== -->
-
-    <div
-        id="guestbook-toast"
-        class="guestbook-toast"
-        role="status"
-    ></div>
-
-
-    <!-- =====================================================
-         FOOTER
-         ===================================================== -->
-
-    <footer class="footer">
-
-        <div class="container">
-
-            <p>
-                &copy; 2026 Oshan Paudel. All rights reserved.
-            </p>
+            </form>
 
         </div>
 
-    </footer>
+    </section>
 
 
-    <!-- =====================================================
-         FIREBASE + AUTH + FIRESTORE
-         EVERYTHING IN THIS ONE FILE
-         ===================================================== -->
+    <!-- COMMENTS -->
 
-    <script type="module">
+    <section
+        id="guestbook-list"
+        class="guestbook-list"
+        aria-live="polite"
+    >
 
-        /* =====================================================
-           FIREBASE IMPORTS
-           ===================================================== */
+        <p class="guestbook-loading">
+            Loading guestbook messages...
+        </p>
 
-        import {
-            initializeApp
-        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+    </section>
 
-        import {
-            getAuth,
-            GoogleAuthProvider,
-            GithubAuthProvider,
-            signInWithPopup,
-            signOut,
-            onAuthStateChanged
-        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+</section>
 
-        import {
-            getFirestore,
-            collection,
-            addDoc,
-            onSnapshot,
-            serverTimestamp
-        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+</main>
 
 
-        /* =====================================================
-           FIREBASE CONFIG
-           ===================================================== */
+<div
+    id="guestbook-toast"
+    class="guestbook-toast"
+></div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDRHmvYcFb6jzPAWrtK6udMZ8mCc8y39w0",
-            authDomain: "myselfoshan.firebaseapp.com",
-            projectId: "myselfoshan",
-            storageBucket: "myselfoshan.firebasestorage.app",
-            messagingSenderId: "808907746677",
-            appId: "1:808907746677:web:228643fd7924f51d20f73c",
-            measurementId: "G-DG6CLVCW1R"
+
+<footer class="footer">
+
+    <div class="container">
+
+        <p>
+            &copy; 2026 Oshan Paudel. All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script type="module">
+
+/* =========================================================
+   FIREBASE
+   ========================================================= */
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+    getAuth,
+    GoogleAuthProvider,
+    GithubAuthProvider,
+    signInWithPopup,
+    signOut,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    updateDoc,
+    doc,
+    onSnapshot,
+    serverTimestamp,
+    query,
+    orderBy
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyDRHmvYcFb6jzPAWrtK6udMZ8mCc8y39w0",
+
+    authDomain:
+        "myselfoshan.firebaseapp.com",
+
+    projectId:
+        "myselfoshan",
+
+    storageBucket:
+        "myselfoshan.firebasestorage.app",
+
+    messagingSenderId:
+        "808907746677",
+
+    appId:
+        "1:808907746677:web:228643fd7924f51d20f73c",
+
+    measurementId:
+        "G-DG6CLVCW1R"
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+const auth =
+    getAuth(app);
+
+const db =
+    getFirestore(app);
+
+
+/* =========================================================
+   ADMIN
+   ========================================================= */
+
+const ADMIN_EMAIL =
+    "oshanpaudelexe@gmail.com";
+
+
+let currentUser = null;
+
+
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
+
+const $ =
+    id => document.getElementById(id);
+
+const signedOut =
+    $("guest-signed-out");
+
+const signedIn =
+    $("guest-signed-in");
+
+const googleLogin =
+    $("google-login");
+
+const githubLogin =
+    $("github-login");
+
+const logout =
+    $("google-logout");
+
+const authStatus =
+    $("auth-status");
+
+const form =
+    $("guestbook-form");
+
+const input =
+    $("guest-message");
+
+const submit =
+    $("guestbook-submit");
+
+const status =
+    $("guestbook-status");
+
+const list =
+    $("guestbook-list");
+
+const toast =
+    $("guestbook-toast");
+
+
+/* =========================================================
+   ADMIN CHECK
+   ========================================================= */
+
+function isAdmin() {
+
+    return !!currentUser &&
+        currentUser.email?.toLowerCase() ===
+        ADMIN_EMAIL.toLowerCase();
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+function toastMsg(
+    text,
+    error = false
+) {
+
+    toast.textContent =
+        text;
+
+    toast.className =
+        "guestbook-toast show" +
+        (error ? " error" : "");
+
+    clearTimeout(
+        toastMsg.timer
+    );
+
+    toastMsg.timer =
+        setTimeout(
+            () =>
+                toast.classList.remove("show"),
+            3000
+        );
+}
+
+
+/* =========================================================
+   DATE
+   ========================================================= */
+
+function dateOf(timestamp) {
+
+    if (
+        timestamp &&
+        typeof timestamp.toDate === "function"
+    ) {
+        return timestamp.toDate();
+    }
+
+    return timestamp instanceof Date
+        ? timestamp
+        : null;
+}
+
+
+function relative(date) {
+
+    if (!date)
+        return "just now";
+
+    const seconds =
+        Math.max(
+            0,
+            (Date.now() -
+                date.getTime()) / 1000
+        );
+
+    if (seconds < 60)
+        return "less than a minute ago";
+
+    const minutes =
+        Math.floor(seconds / 60);
+
+    if (minutes < 60)
+        return `${minutes} minute${
+            minutes === 1 ? "" : "s"
+        } ago`;
+
+    const hours =
+        Math.floor(minutes / 60);
+
+    if (hours < 24)
+        return `${hours} hour${
+            hours === 1 ? "" : "s"
+        } ago`;
+
+    const days =
+        Math.floor(hours / 24);
+
+    if (days < 30)
+        return `${days} day${
+            days === 1 ? "" : "s"
+        } ago`;
+
+    const months =
+        Math.floor(days / 30);
+
+    if (months < 12)
+        return `${months} month${
+            months === 1 ? "" : "s"
+        } ago`;
+
+    const years =
+        Math.floor(months / 12);
+
+    return `${years} year${
+        years === 1 ? "" : "s"
+    } ago`;
+}
+
+
+/* =========================================================
+   AVATAR
+   ========================================================= */
+
+function createAvatar(
+    url,
+    name,
+    small = false
+) {
+
+    const avatar =
+        document.createElement("div");
+
+    avatar.className =
+        "guestbook-avatar";
+
+    if (small) {
+
+        avatar.style.width = "32px";
+        avatar.style.height = "32px";
+        avatar.style.minWidth = "32px";
+    }
+
+    if (url) {
+
+        const image =
+            document.createElement("img");
+
+        image.src =
+            url;
+
+        image.alt = "";
+
+        image.referrerPolicy =
+            "no-referrer";
+
+        image.onerror = () => {
+
+            image.remove();
+
+            avatar.textContent =
+                (name || "A")[0]
+                    .toUpperCase();
         };
 
+        avatar.appendChild(
+            image
+        );
 
-        /* =====================================================
-           INITIALIZE FIREBASE
-           ===================================================== */
+    } else {
 
-        const app = initializeApp(firebaseConfig);
+        avatar.textContent =
+            (name || "A")[0]
+                .toUpperCase();
+    }
 
-        const auth = getAuth(app);
+    return avatar;
+}
 
-        const db = getFirestore(app);
 
+/* =========================================================
+   LOGIN - GOOGLE
+   ========================================================= */
 
-        /* =====================================================
-           ELEMENTS
-           ===================================================== */
+async function loginWithGoogle() {
 
-        const $ = id =>
-            document.getElementById(id);
+    googleLogin.disabled =
+        true;
 
-        const signedOut =
-            $("guest-signed-out");
+    authStatus.textContent =
+        "Opening Google login...";
 
-        const signedIn =
-            $("guest-signed-in");
+    try {
 
-        const googleLogin =
-            $("google-login");
+        const provider =
+            new GoogleAuthProvider();
 
-        const githubLogin =
-            $("github-login");
+        provider.setCustomParameters({
+            prompt: "select_account"
+        });
 
-        const logout =
-            $("google-logout");
+        await signInWithPopup(
+            auth,
+            provider
+        );
 
-        const authStatus =
-            $("auth-status");
+        authStatus.textContent =
+            "";
 
-        const form =
-            $("guestbook-form");
+    } catch (error) {
 
-        const input =
-            $("guest-message");
+        console.error(error);
 
-        const submit =
-            $("guestbook-submit");
-
-        const status =
-            $("guestbook-status");
-
-        const list =
-            $("guestbook-list");
-
-        const toast =
-            $("guestbook-toast");
-
-
-        let user = null;
-
-
-        /* =====================================================
-           TOAST
-           ===================================================== */
-
-        function toastMsg(text, error = false) {
-
-            toast.textContent = text;
-
-            toast.className =
-                "guestbook-toast show" +
-                (error ? " error" : "");
-
-            clearTimeout(toastMsg.timer);
-
-            toastMsg.timer =
-                setTimeout(() => {
-                    toast.classList.remove("show");
-                }, 3000);
-        }
-
-
-        /* =====================================================
-           DATE
-           ===================================================== */
-
-        function dateOf(timestamp) {
-
-            if (
-                timestamp &&
-                typeof timestamp.toDate === "function"
-            ) {
-                return timestamp.toDate();
-            }
-
-            if (timestamp instanceof Date) {
-                return timestamp;
-            }
-
-            return null;
-        }
-
-
-        /* =====================================================
-           RELATIVE TIME
-           ===================================================== */
-
-        function relative(date) {
-
-            if (!date) {
-                return "just now";
-            }
-
-            const seconds = Math.max(
-                0,
-                (Date.now() - date.getTime()) / 1000
-            );
-
-            if (seconds < 60) {
-                return "less than a minute ago";
-            }
-
-            const minutes =
-                Math.floor(seconds / 60);
-
-            if (minutes < 60) {
-                return `${minutes} minute${
-                    minutes === 1 ? "" : "s"
-                } ago`;
-            }
-
-            const hours =
-                Math.floor(minutes / 60);
-
-            if (hours < 24) {
-                return `${hours} hour${
-                    hours === 1 ? "" : "s"
-                } ago`;
-            }
-
-            const days =
-                Math.floor(hours / 24);
-
-            if (days < 30) {
-                return `${days} day${
-                    days === 1 ? "" : "s"
-                } ago`;
-            }
-
-            const months =
-                Math.floor(days / 30);
-
-            if (months < 12) {
-                return `${months} month${
-                    months === 1 ? "" : "s"
-                } ago`;
-            }
-
-            const years =
-                Math.floor(months / 12);
-
-            return `${years} year${
-                years === 1 ? "" : "s"
-            } ago`;
-        }
-
-
-        /* =====================================================
-           AVATAR
-           ===================================================== */
-
-        function avatar(url, name) {
-
-            const element =
-                document.createElement("div");
-
-            element.className =
-                "guestbook-avatar";
-
-            if (url) {
-
-                const image =
-                    document.createElement("img");
-
-                image.src = url;
-                image.alt = "";
-                image.referrerPolicy =
-                    "no-referrer";
-
-                image.onerror = () => {
-
-                    image.remove();
-
-                    element.textContent =
-                        (name || "A")[0]
-                            .toUpperCase();
-                };
-
-                element.append(image);
-
-            } else {
-
-                element.textContent =
-                    (name || "A")[0]
-                        .toUpperCase();
-            }
-
-            return element;
-        }
-
-
-        /* =====================================================
-           RENDER GUESTBOOK
-           ===================================================== */
-
-        function render(items) {
-
-            list.innerHTML = "";
-
-            if (!items.length) {
-
-                list.innerHTML =
-                    '<p class="guestbook-empty">' +
-                    'No messages yet. Be the first to ' +
-                    'sign the guestbook.' +
-                    '</p>';
-
-                return;
-            }
-
-            items.sort(
-                (a, b) =>
-                    (b.createdAt?.getTime?.() || 0) -
-                    (a.createdAt?.getTime?.() || 0)
-            );
-
-
-            for (const item of items) {
-
-                const article =
-                    document.createElement("article");
-
-                article.className =
-                    "guestbook-entry";
-
-
-                const top =
-                    document.createElement("div");
-
-                top.className =
-                    "guestbook-entry-top";
-
-
-                top.append(
-                    avatar(
-                        item.photoURL,
-                        item.displayName
-                    )
-                );
-
-
-                const identity =
-                    document.createElement("div");
-
-                identity.className =
-                    "guestbook-identity";
-
-
-                const nameLine =
-                    document.createElement("div");
-
-                nameLine.className =
-                    "guestbook-name-line";
-
-
-                const name =
-                    document.createElement("span");
-
-                name.className =
-                    "guestbook-name";
-
-                name.textContent =
-                    item.displayName ||
-                    "Anonymous";
-
-
-                const signed =
-                    document.createElement("span");
-
-                signed.className =
-                    "guestbook-signed";
-
-                signed.textContent =
-                    "signed the guestbook";
-
-
-                nameLine.append(
-                    name,
-                    signed
-                );
-
-
-                const time =
-                    document.createElement("time");
-
-                time.className =
-                    "guestbook-time";
-
-                time.textContent =
-                    relative(item.createdAt);
-
-
-                if (item.createdAt) {
-                    time.dateTime =
-                        item.createdAt.toISOString();
-                }
-
-
-                identity.append(
-                    nameLine,
-                    time
-                );
-
-
-                top.append(identity);
-
-
-                const message =
-                    document.createElement("p");
-
-                message.className =
-                    "guestbook-message";
-
-                message.textContent =
-                    item.message;
-
-
-                article.append(
-                    top,
-                    message
-                );
-
-
-                list.append(article);
-            }
-        }
-
-
-        /* =====================================================
-           UPDATE USER
-           ===================================================== */
-
-        function updateUser(currentUser) {
-
-            user = currentUser;
-
-            signedOut.classList.toggle(
-                "hidden",
-                !!currentUser
-            );
-
-            signedIn.classList.toggle(
-                "hidden",
-                !currentUser
-            );
-
-
-            if (!currentUser) {
-                return;
-            }
-
-
-            const name =
-                currentUser.displayName ||
-                "User";
-
-
-            $("guest-user-name")
-                .textContent = name;
-
-
-            $("guest-user-email")
-                .textContent =
-                    currentUser.email || "";
-
-
-            const userAvatar =
-                $("guest-avatar");
-
-            userAvatar.innerHTML = "";
-
-
-            if (currentUser.photoURL) {
-
-                const image =
-                    document.createElement("img");
-
-                image.src =
-                    currentUser.photoURL;
-
-                image.alt = "";
-
-                image.referrerPolicy =
-                    "no-referrer";
-
-                userAvatar.append(image);
-
-            } else {
-
-                userAvatar.textContent =
-                    name[0].toUpperCase();
-            }
-        }
-
-
-        /* =====================================================
-           GOOGLE LOGIN
-           ===================================================== */
-
-        async function loginWithGoogle() {
-
-            googleLogin.disabled = true;
-
-            authStatus.className =
-                "guestbook-status";
+        if (
+            error.code ===
+            "auth/unauthorized-domain"
+        ) {
 
             authStatus.textContent =
-                "Opening Google login...";
+                "This website domain is not authorized in Firebase.";
 
-
-            try {
-
-                const provider =
-                    new GoogleAuthProvider();
-
-                provider.setCustomParameters({
-                    prompt: "select_account"
-                });
-
-
-                await signInWithPopup(
-                    auth,
-                    provider
-                );
-
-
-                authStatus.textContent = "";
-
-
-            } catch (error) {
-
-                console.error(
-                    "Google login error:",
-                    error
-                );
-
-
-                authStatus.className =
-                    "guestbook-status error";
-
-
-                if (
-                    error.code ===
-                    "auth/unauthorized-domain"
-                ) {
-
-                    authStatus.textContent =
-                        "This website domain is not authorized in Firebase.";
-
-                } else if (
-                    error.code ===
-                    "auth/popup-closed-by-user"
-                ) {
-
-                    authStatus.textContent = "";
-
-                } else {
-
-                    authStatus.textContent =
-                        "Google login failed. Check Firebase Authentication.";
-
-                    toastMsg(
-                        "Google login failed.",
-                        true
-                    );
-                }
-
-            } finally {
-
-                googleLogin.disabled = false;
-            }
-        }
-
-
-        /* =====================================================
-           GITHUB LOGIN
-           ===================================================== */
-
-        async function loginWithGithub() {
-
-            githubLogin.disabled = true;
-
-            authStatus.className =
-                "guestbook-status";
+        } else if (
+            error.code ===
+            "auth/popup-closed-by-user"
+        ) {
 
             authStatus.textContent =
-                "Opening GitHub login...";
+                "";
 
+        } else {
 
-            try {
+            authStatus.textContent =
+                "Google login failed.";
 
-                const provider =
-                    new GithubAuthProvider();
-
-
-                await signInWithPopup(
-                    auth,
-                    provider
-                );
-
-
-                authStatus.textContent = "";
-
-
-            } catch (error) {
-
-                console.error(
-                    "GitHub login error:",
-                    error
-                );
-
-
-                authStatus.className =
-                    "guestbook-status error";
-
-
-                if (
-                    error.code ===
-                    "auth/unauthorized-domain"
-                ) {
-
-                    authStatus.textContent =
-                        "This website domain is not authorized in Firebase.";
-
-
-                } else if (
-                    error.code ===
-                    "auth/popup-closed-by-user"
-                ) {
-
-                    authStatus.textContent = "";
-
-
-                } else if (
-                    error.code ===
-                    "auth/account-exists-with-different-credential"
-                ) {
-
-                    authStatus.textContent =
-                        "This email already has an account using another login method.";
-
-                    toastMsg(
-                        "This email is already registered with another login method.",
-                        true
-                    );
-
-
-                } else {
-
-                    authStatus.textContent =
-                        "GitHub login failed. Check your Firebase GitHub provider settings.";
-
-                    toastMsg(
-                        "GitHub login failed.",
-                        true
-                    );
-                }
-
-            } finally {
-
-                githubLogin.disabled = false;
-            }
         }
 
+    } finally {
 
-        /* =====================================================
-           LOGOUT
-           ===================================================== */
+        googleLogin.disabled =
+            false;
+    }
+}
 
-        async function logoutUser() {
 
-            try {
+/* =========================================================
+   LOGIN - GITHUB
+   ========================================================= */
 
-                await signOut(auth);
+async function loginWithGithub() {
 
-                toastMsg(
-                    "Signed out successfully."
-                );
+    githubLogin.disabled =
+        true;
 
-            } catch (error) {
+    authStatus.textContent =
+        "Opening GitHub login...";
 
-                console.error(
-                    "Logout error:",
-                    error
-                );
+    try {
 
-                toastMsg(
-                    "Could not sign out.",
-                    true
-                );
-            }
+        const provider =
+            new GithubAuthProvider();
+
+        await signInWithPopup(
+            auth,
+            provider
+        );
+
+        authStatus.textContent =
+            "";
+
+    } catch (error) {
+
+        console.error(error);
+
+        if (
+            error.code ===
+            "auth/unauthorized-domain"
+        ) {
+
+            authStatus.textContent =
+                "This website domain is not authorized in Firebase.";
+
+        } else if (
+            error.code ===
+            "auth/popup-closed-by-user"
+        ) {
+
+            authStatus.textContent =
+                "";
+
+        } else {
+
+            authStatus.textContent =
+                "GitHub login failed. Check Firebase GitHub settings.";
+
         }
 
+    } finally {
 
-        /* =====================================================
-           POST MESSAGE
-           ===================================================== */
-
-        async function post(event) {
-
-            event.preventDefault();
+        githubLogin.disabled =
+            false;
+    }
+}
 
 
-            if (!user) {
+/* =========================================================
+   UPDATE USER
+   ========================================================= */
 
-                toastMsg(
-                    "Please sign in first.",
-                    true
-                );
+function updateUser(user) {
 
-                return;
-            }
+    currentUser =
+        user;
 
+    signedOut.classList.toggle(
+        "hidden",
+        !!user
+    );
+
+    signedIn.classList.toggle(
+        "hidden",
+        !user
+    );
+
+
+    if (!user)
+        return;
+
+
+    const name =
+        user.displayName ||
+        "User";
+
+
+    $("guest-user-name")
+        .textContent =
+        name;
+
+
+    $("guest-user-email")
+        .textContent =
+        user.email || "";
+
+
+    const avatar =
+        $("guest-avatar");
+
+    avatar.innerHTML =
+        "";
+
+
+    if (user.photoURL) {
+
+        const image =
+            document.createElement("img");
+
+        image.src =
+            user.photoURL;
+
+        image.alt =
+            "";
+
+        image.referrerPolicy =
+            "no-referrer";
+
+        avatar.appendChild(
+            image
+        );
+
+    } else {
+
+        avatar.textContent =
+            name[0].toUpperCase();
+    }
+}
+
+
+/* =========================================================
+   CREATE REPLY UI
+   ========================================================= */
+
+function createReplyBox(
+    commentId
+) {
+
+    const wrapper =
+        document.createElement("div");
+
+    wrapper.className =
+        "guestbook-reply-box";
+
+
+    const textarea =
+        document.createElement("textarea");
+
+    textarea.placeholder =
+        "Write your reply...";
+
+    textarea.maxLength =
+        500;
+
+
+    const button =
+        document.createElement("button");
+
+    button.type =
+        "button";
+
+    button.className =
+        "guestbook-reply-submit";
+
+    button.textContent =
+        "Post Reply";
+
+
+    button.addEventListener(
+        "click",
+        async () => {
 
             const message =
-                input.value.trim();
+                textarea.value.trim();
 
-
-            if (message.length < 2) {
-
-                toastMsg(
-                    "Please write at least 2 characters.",
-                    true
-                );
-
+            if (!message)
                 return;
-            }
 
 
-            submit.disabled = true;
-            input.disabled = true;
-
-            status.className =
-                "guestbook-status";
-
-            status.textContent =
-                "Posting...";
+            button.disabled =
+                true;
 
 
             try {
@@ -1214,22 +1164,24 @@
                 await addDoc(
                     collection(
                         db,
-                        "guestbook"
+                        "guestbook",
+                        commentId,
+                        "replies"
                     ),
                     {
-                        uid: user.uid,
+
+                        uid:
+                            currentUser.uid,
 
                         displayName:
-                            user.displayName ||
-                            "Anonymous",
+                            currentUser.displayName ||
+                            "Oshan",
 
                         photoURL:
-                            user.photoURL ||
+                            currentUser.photoURL ||
                             "",
 
-                        message:
-
-                            message,
+                        message,
 
                         createdAt:
                             serverTimestamp()
@@ -1237,164 +1189,729 @@
                 );
 
 
-                form.reset();
+                textarea.value =
+                    "";
 
-                status.textContent = "";
+                wrapper.classList.remove(
+                    "show"
+                );
 
                 toastMsg(
-                    "Message posted!"
+                    "Reply posted!"
                 );
 
 
             } catch (error) {
 
-                console.error(
-                    "Firestore error:",
-                    error
-                );
-
-
-                status.className =
-                    "guestbook-status error";
-
-
-                if (
-                    error.code ===
-                    "permission-denied"
-                ) {
-
-                    status.textContent =
-                        "Firestore rules blocked this post.";
-
-                } else {
-
-                    status.textContent =
-                        "Could not post the message.";
-                }
-
+                console.error(error);
 
                 toastMsg(
-                    "Message could not be posted.",
+                    "Could not post reply.",
                     true
                 );
 
-
             } finally {
 
-                submit.disabled = false;
-                input.disabled = false;
+                button.disabled =
+                    false;
             }
         }
+    );
 
 
-        /* =====================================================
-           AUTH STATE
-           ===================================================== */
+    wrapper.append(
+        textarea,
+        button
+    );
 
-        onAuthStateChanged(
-            auth,
-            updateUser
+    return wrapper;
+}
+
+
+/* =========================================================
+   LOAD REPLIES
+   ========================================================= */
+
+function loadReplies(
+    commentId,
+    container
+) {
+
+    const repliesQuery =
+        query(
+            collection(
+                db,
+                "guestbook",
+                commentId,
+                "replies"
+            ),
+            orderBy(
+                "createdAt",
+                "asc"
+            )
         );
 
 
-        /* =====================================================
-           LOAD GUESTBOOK
-           ===================================================== */
+    onSnapshot(
+        repliesQuery,
+        snapshot => {
 
-        onSnapshot(
-            collection(
-                db,
-                "guestbook"
-            ),
+            container.innerHTML =
+                "";
 
-            snapshot => {
 
-                const messages =
-                    snapshot.docs.map(
-                        document => {
+            snapshot.forEach(
+                replyDoc => {
 
-                            const data =
-                                document.data();
+                    const reply =
+                        replyDoc.data();
 
-                            return {
 
-                                displayName:
-                                    data.displayName ||
-                                    "Anonymous",
+                    const replyElement =
+                        document.createElement("div");
 
-                                photoURL:
-                                    data.photoURL ||
-                                    "",
+                    replyElement.className =
+                        "guestbook-reply";
 
-                                message:
-                                    data.message ||
-                                    "",
 
-                                createdAt:
-                                    dateOf(
-                                        data.createdAt
-                                    )
-                            };
-                        }
+                    replyElement.append(
+                        createAvatar(
+                            reply.photoURL,
+                            reply.displayName,
+                            true
+                        )
                     );
 
 
-                render(messages);
-            },
+                    const content =
+                        document.createElement("div");
+
+                    content.className =
+                        "guestbook-reply-content";
 
 
-            error => {
+                    const name =
+                        document.createElement("div");
 
-                console.error(
-                    "Firestore read error:",
-                    error
+                    name.className =
+                        "guestbook-reply-name";
+
+                    name.textContent =
+                        reply.displayName ||
+                        "Oshan";
+
+
+                    const badge =
+                        document.createElement("span");
+
+                    badge.className =
+                        "guestbook-admin-badge";
+
+                    badge.textContent =
+                        "OWNER";
+
+
+                    name.appendChild(
+                        badge
+                    );
+
+
+                    const text =
+                        document.createElement("div");
+
+                    text.className =
+                        "guestbook-reply-text";
+
+                    text.textContent =
+                        reply.message;
+
+
+                    const time =
+                        document.createElement("div");
+
+                    time.className =
+                        "guestbook-reply-time";
+
+                    time.textContent =
+                        relative(
+                            dateOf(
+                                reply.createdAt
+                            )
+                        );
+
+
+                    content.append(
+                        name,
+                        text,
+                        time
+                    );
+
+
+                    replyElement.append(
+                        content
+                    );
+
+
+                    container.append(
+                        replyElement
+                    );
+                }
+            );
+        }
+    );
+}
+
+
+/* =========================================================
+   RENDER COMMENTS
+   ========================================================= */
+
+function renderComments(
+    comments
+) {
+
+    list.innerHTML =
+        "";
+
+
+    if (!comments.length) {
+
+        list.innerHTML =
+            '<p class="guestbook-empty">' +
+            'No messages yet. Be the first to sign the guestbook.' +
+            '</p>';
+
+        return;
+    }
+
+
+    comments.sort(
+        (a, b) =>
+            (b.createdAt?.getTime?.() || 0) -
+            (a.createdAt?.getTime?.() || 0)
+    );
+
+
+    comments.forEach(
+        comment => {
+
+            const article =
+                document.createElement("article");
+
+            article.className =
+                "guestbook-entry";
+
+
+            /* TOP */
+
+            const top =
+                document.createElement("div");
+
+            top.className =
+                "guestbook-entry-top";
+
+
+            top.appendChild(
+                createAvatar(
+                    comment.photoURL,
+                    comment.displayName
+                )
+            );
+
+
+            const identity =
+                document.createElement("div");
+
+            identity.className =
+                "guestbook-identity";
+
+
+            const nameLine =
+                document.createElement("div");
+
+            nameLine.className =
+                "guestbook-name-line";
+
+
+            const name =
+                document.createElement("span");
+
+            name.className =
+                "guestbook-name";
+
+            name.textContent =
+                comment.displayName ||
+                "Anonymous";
+
+
+            const signed =
+                document.createElement("span");
+
+            signed.className =
+                "guestbook-signed";
+
+            signed.textContent =
+                "signed the guestbook";
+
+
+            nameLine.append(
+                name,
+                signed
+            );
+
+
+            const time =
+                document.createElement("time");
+
+            time.className =
+                "guestbook-time";
+
+            time.textContent =
+                relative(
+                    comment.createdAt
                 );
 
 
-                list.innerHTML =
-                    '<p class="guestbook-empty guestbook-error">' +
-                    'Messages could not be loaded. ' +
-                    'Check Firestore Rules or browser blocking.' +
-                    '</p>';
+            identity.append(
+                nameLine,
+                time
+            );
+
+
+            top.appendChild(
+                identity
+            );
+
+
+            article.appendChild(
+                top
+            );
+
+
+            /* MESSAGE */
+
+            const message =
+                document.createElement("p");
+
+            message.className =
+                "guestbook-message";
+
+            message.textContent =
+                comment.message;
+
+
+            article.appendChild(
+                message
+            );
+
+
+            /* ADMIN ACTIONS */
+
+            if (isAdmin()) {
+
+                const actions =
+                    document.createElement("div");
+
+                actions.className =
+                    "guestbook-actions";
+
+
+                /* HEART */
+
+                const heart =
+                    document.createElement("button");
+
+                heart.type =
+                    "button";
+
+                heart.className =
+                    "guestbook-admin-button guestbook-heart" +
+                    (comment.hearted
+                        ? " active"
+                        : "");
+
+                heart.innerHTML =
+                    comment.hearted
+                        ? "❤️ Hearted"
+                        : "🤍 Heart";
+
+
+                heart.addEventListener(
+                    "click",
+                    async () => {
+
+                        try {
+
+                            await updateDoc(
+                                doc(
+                                    db,
+                                    "guestbook",
+                                    comment.id
+                                ),
+                                {
+                                    hearted:
+                                        !comment.hearted
+                                }
+                            );
+
+                        } catch (error) {
+
+                            console.error(
+                                error
+                            );
+
+                            toastMsg(
+                                "Could not update heart.",
+                                true
+                            );
+                        }
+                    }
+                );
+
+
+                /* REPLY */
+
+                const replyButton =
+                    document.createElement("button");
+
+                replyButton.type =
+                    "button";
+
+                replyButton.className =
+                    "guestbook-admin-button";
+
+                replyButton.innerHTML =
+                    "↩ Reply";
+
+
+                const replyBox =
+                    createReplyBox(
+                        comment.id
+                    );
+
+
+                replyButton.addEventListener(
+                    "click",
+                    () => {
+
+                        replyBox.classList.toggle(
+                            "show"
+                        );
+
+                        if (
+                            replyBox.classList.contains(
+                                "show"
+                            )
+                        ) {
+
+                            replyBox
+                                .querySelector("textarea")
+                                .focus();
+                        }
+                    }
+                );
+
+
+                actions.append(
+                    heart,
+                    replyButton
+                );
+
+
+                article.appendChild(
+                    actions
+                );
+
+                article.appendChild(
+                    replyBox
+                );
             }
+
+
+            /* HEART DISPLAY FOR EVERYONE */
+
+            if (comment.hearted) {
+
+                const heartNotice =
+                    document.createElement("div");
+
+                heartNotice.style.margin =
+                    "10px 0 0 54px";
+
+                heartNotice.style.color =
+                    "#ff5b72";
+
+                heartNotice.style.fontSize =
+                    ".85rem";
+
+                heartNotice.textContent =
+                    "❤️ Oshan liked this";
+
+
+                article.appendChild(
+                    heartNotice
+                );
+            }
+
+
+            /* REPLIES */
+
+            const replies =
+                document.createElement("div");
+
+            replies.className =
+                "guestbook-replies";
+
+
+            article.appendChild(
+                replies
+            );
+
+
+            loadReplies(
+                comment.id,
+                replies
+            );
+
+
+            list.appendChild(
+                article
+            );
+        }
+    );
+}
+
+
+/* =========================================================
+   LOAD COMMENTS
+   ========================================================= */
+
+const commentsQuery =
+    query(
+        collection(
+            db,
+            "guestbook"
+        ),
+        orderBy(
+            "createdAt",
+            "desc"
+        )
+    );
+
+
+onSnapshot(
+    commentsQuery,
+    snapshot => {
+
+        const comments =
+            snapshot.docs.map(
+                document => {
+
+                    const data =
+                        document.data();
+
+                    return {
+
+                        id:
+                            document.id,
+
+                        displayName:
+                            data.displayName ||
+                            "Anonymous",
+
+                        photoURL:
+                            data.photoURL ||
+                            "",
+
+                        message:
+                            data.message ||
+                            "",
+
+                        hearted:
+                            data.hearted === true,
+
+                        createdAt:
+                            dateOf(
+                                data.createdAt
+                            )
+                    };
+                }
+            );
+
+
+        renderComments(
+            comments
+        );
+    },
+
+    error => {
+
+        console.error(
+            "Firestore read error:",
+            error
         );
 
+        list.innerHTML =
+            '<p class="guestbook-empty guestbook-error">' +
+            'Messages could not be loaded. Check Firestore Rules.' +
+            '</p>';
+    }
+);
 
-        /* =====================================================
-           EVENT LISTENERS
-           ===================================================== */
 
-        googleLogin?.addEventListener(
-            "click",
-            loginWithGoogle
+/* =========================================================
+   POST COMMENT
+   ========================================================= */
+
+form.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+
+        if (!currentUser) {
+
+            toastMsg(
+                "Please sign in first.",
+                true
+            );
+
+            return;
+        }
+
+
+        const message =
+            input.value.trim();
+
+
+        if (message.length < 2) {
+
+            toastMsg(
+                "Please write at least 2 characters.",
+                true
+            );
+
+            return;
+        }
+
+
+        submit.disabled =
+            true;
+
+        input.disabled =
+            true;
+
+        status.textContent =
+            "Posting...";
+
+
+        try {
+
+            await addDoc(
+                collection(
+                    db,
+                    "guestbook"
+                ),
+                {
+
+                    uid:
+                        currentUser.uid,
+
+                    displayName:
+                        currentUser.displayName ||
+                        "Anonymous",
+
+                    photoURL:
+                        currentUser.photoURL ||
+                        "",
+
+                    message,
+
+                    hearted:
+                        false,
+
+                    createdAt:
+                        serverTimestamp()
+                }
+            );
+
+
+            form.reset();
+
+            status.textContent =
+                "";
+
+            toastMsg(
+                "Message posted!"
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                error
+            );
+
+            status.textContent =
+                "Could not post the message.";
+
+            toastMsg(
+                "Message could not be posted.",
+                true
+            );
+
+        } finally {
+
+            submit.disabled =
+                false;
+
+            input.disabled =
+                false;
+        }
+    }
+);
+
+
+/* =========================================================
+   EVENTS
+   ========================================================= */
+
+googleLogin.addEventListener(
+    "click",
+    loginWithGoogle
+);
+
+githubLogin.addEventListener(
+    "click",
+    loginWithGithub
+);
+
+logout.addEventListener(
+    "click",
+    async () => {
+
+        await signOut(auth);
+
+        toastMsg(
+            "Signed out."
         );
+    }
+);
 
 
-        githubLogin?.addEventListener(
-            "click",
-            loginWithGithub
-        );
+onAuthStateChanged(
+    auth,
+    updateUser
+);
+
+</script>
 
 
-        logout?.addEventListener(
-            "click",
-            logoutUser
-        );
-
-
-        form?.addEventListener(
-            "submit",
-            post
-        );
-
-    </script>
-
-
-    <!-- Your existing website JavaScript -->
-    <script
-        src="/script.js"
-        defer
-    ></script>
+<script
+    src="/script.js"
+    defer
+></script>
 
 </body>
 </html>
